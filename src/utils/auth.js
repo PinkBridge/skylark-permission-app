@@ -1,33 +1,33 @@
 /**
- * 认证相关工具函数
+ * Authentication utility functions
  */
 
 /**
- * 检查是否已登录
+ * Check if user is authenticated
  */
 export function isAuthenticated() {
   return !!(localStorage.getItem('access_token') || sessionStorage.getItem('access_token'))
 }
 
 /**
- * 获取访问令牌
+ * Get access token
  */
 export function getAccessToken() {
   return localStorage.getItem('access_token') || sessionStorage.getItem('access_token')
 }
 
 /**
- * 获取刷新令牌
+ * Get refresh token
  */
 export function getRefreshToken() {
   return localStorage.getItem('refresh_token') || sessionStorage.getItem('refresh_token')
 }
 
 /**
- * 保存令牌
- * @param {string} accessToken - 访问令牌
- * @param {string} refreshToken - 刷新令牌（可选）
- * @param {boolean} remember - 是否记住（使用 localStorage）
+ * Save tokens
+ * @param {string} accessToken - Access token
+ * @param {string} refreshToken - Refresh token (optional)
+ * @param {boolean} remember - Whether to remember (use localStorage)
  */
 export function saveTokens(accessToken, refreshToken = null, remember = false) {
   const storage = remember ? localStorage : sessionStorage
@@ -35,32 +35,47 @@ export function saveTokens(accessToken, refreshToken = null, remember = false) {
   if (refreshToken) {
     storage.setItem('refresh_token', refreshToken)
   }
+  window.dispatchEvent(new CustomEvent('auth-token-changed', {
+    detail: { accessToken, refreshToken, remember }
+  }))
 }
 
 /**
- * 清除令牌
+ * Clear tokens
  */
 export function clearTokens() {
+  const hadToken = !!getAccessToken()
   localStorage.removeItem('access_token')
   localStorage.removeItem('refresh_token')
   localStorage.removeItem('userInfo')
   sessionStorage.removeItem('access_token')
   sessionStorage.removeItem('refresh_token')
   sessionStorage.removeItem('userInfo')
+  if (hadToken) {
+    window.dispatchEvent(new CustomEvent('auth-token-changed', {
+      detail: { accessToken: null, refreshToken: null }
+    }))
+  }
+  window.dispatchEvent(new CustomEvent('auth-userinfo-changed', {
+    detail: null
+  }))
 }
 
 /**
- * 保存用户信息
- * @param {object} userInfo - 用户信息
- * @param {boolean} remember - 是否记住
+ * Save user information
+ * @param {object} userInfo - User information
+ * @param {boolean} remember - Whether to remember
  */
 export function saveUserInfo(userInfo, remember = false) {
   const storage = remember ? localStorage : sessionStorage
   storage.setItem('userInfo', JSON.stringify(userInfo))
+  window.dispatchEvent(new CustomEvent('auth-userinfo-changed', {
+    detail: userInfo
+  }))
 }
 
 /**
- * 获取用户信息
+ * Get user information
  */
 export function getUserInfo() {
   const userInfoStr = localStorage.getItem('userInfo') || sessionStorage.getItem('userInfo')

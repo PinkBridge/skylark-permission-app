@@ -3,20 +3,23 @@ module.exports = defineConfig({
   transpileDependencies: true,
   devServer: {
     proxy: {
-      '/api/oauth': {
+      '/oauth': {
+        target: 'http://localhost:9527',
+        changeOrigin: true,
+        secure: false,
+        timeout: 30000,
+        proxyTimeout: 30000,
+        logLevel: 'debug'
+      },
+      '/api': {
         target: 'http://localhost:9527',
         changeOrigin: true,
         pathRewrite: {
-          '^/api/oauth': '/oauth'
+          '^/api': '/api'
         },
-        // 如果需要处理 HTTPS 证书问题
         secure: false,
-        // 增加代理超时时间
         timeout: 30000,
-        // 连接超时
-        proxyTimeout: 30000,
-        // 日志输出
-        logLevel: 'debug'
+        proxyTimeout: 30000
       }
     }
   }

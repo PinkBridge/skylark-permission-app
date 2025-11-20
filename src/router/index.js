@@ -6,44 +6,58 @@ import { getAuthorizationUrl } from '../api/oauth'
 const routes = [
   {
     path: '/',
+    redirect: '/home'
+  },
+  {
+    path: '/welcome',
     name: 'Welcome',
-    component: () => import('../views/Welcome.vue'), 
+    component: () => import('@/views/Welcome.vue'),
     meta: {
       title: '欢迎页',
-      requiresAuth: false // no need to login to access
+      requiresAuth: false
     }
   },
   {
     path: '/home',
-    name: 'HomeCallback',
-    component: () => import('../views/Home.vue'), // OAuth2 callback route
-    meta: {
-      title: '首页',
-      requiresAuth: false // allow callback, internal processing
-    }
-  },
-  {
-    path: '/dashboard',
-    name: 'Dashboard',
-    component: () => import('../views/Home.vue'),
+    component: () => import('@/views/Home.vue'),
     meta: {
       title: '控制台',
-      requiresAuth: true // 需要登录才能访问
-    }
+      requiresAuth: false // Need to handle OAuth callback here, relax restriction
+    },
+    children: [
+      {
+        path: '',
+        name: 'Dashboard',
+        component: () => import('@/views/dashboard/DashboardOverview.vue'),
+        meta: {
+          title: '仪表盘',
+          requiresAuth: true
+        }
+      },
+      {
+        path: '/system/users',
+        name: 'UserList',
+        component: () => import('@/views/UserList.vue'),
+        meta: {
+          title: '用户管理',
+          requiresAuth: true
+        }
+      },
+      {
+        path: '/system/roles',
+        name: 'RoleList',
+        component: () => import('@/views/RoleList.vue'),
+        meta: {
+          title: '角色管理',
+          requiresAuth: true
+        }
+      }
+    ]
   },
   {
-    path: '/about',
-    name: 'About',
-    component: () => import('../views/About.vue'),
-    meta: {
-      title: '关于',
-      requiresAuth: true
-    }
-  },
-  {
-    path: '/:pathMatch(.*)*', // 404 页面
+    path: '/:pathMatch(.*)*',
     name: 'NotFound',
-    component: () => import('../views/NotFound.vue'),
+    component: () => import('@/views/NotFound.vue'),
     meta: {
       title: '页面不存在'
     }
@@ -59,27 +73,21 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   document.title = to.meta.title || 'Permission App'
 
-  // check if authenticated (using OAuth2 token)
   const authenticated = isAuthenticated()
-  // OAuth2 callback route (/home), allow direct access, internal processing of code
-  if (to.name === 'HomeCallback') {
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+
+  // If it's an OAuth callback (with code), allow entering Home first to handle it
+  if (to.query.code) {
     next()
     return
   }
-  
-  if (to.meta.requiresAuth && !authenticated) {
-    // need to login but not logged in, redirect to OAuth2 authorization server
+
+  if (requiresAuth && !authenticated) {
     const authUrl = getAuthorizationUrl()
     window.location.href = authUrl
-    return
-  } else if (to.name === 'Login' && authenticated) {
-    // logged in user visits login page, redirect to dashboard
-    next({ name: 'Dashboard' })
   } else if (to.name === 'Welcome' && authenticated) {
-    // logged in user visits home page, redirect to dashboard
     next({ name: 'Dashboard' })
   } else {
-    // normal access
     next()
   }
 })

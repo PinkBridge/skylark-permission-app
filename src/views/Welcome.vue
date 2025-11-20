@@ -1,15 +1,13 @@
 <template>
   <div class="index-container">
     <div class="index-content">
-      <!-- Logo -->
       <div class="logo-section">
         <div class="logo-placeholder">
           <img src="@/assets/logo.png" alt="Logo" style="width: 120px; height: 120px; border-radius: 50%;" />
         </div>
-        <h1 class="app-title">Skylar权限管理系统</h1>
+        <h1 class="app-title">Skylark管理系统</h1>
       </div>
 
-      <!-- 操作按钮 -->
       <div class="action-section">
         <el-button 
           type="primary" 
@@ -35,7 +33,7 @@
 <script>
 import { ElMessage } from 'element-plus'
 import { Avatar } from '@element-plus/icons-vue'
-import { getAuthorizationUrl } from '../api/oauth'
+import { getAuthorizationUrl } from '@/api/oauth'
 
 export default {
   name: 'WelcomePage',

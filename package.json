@@ -12,6 +12,7 @@
     "core-js": "^3.8.3",
     "element-plus": "^2.11.7",
     "vue": "^3.2.13",
+    "vue-i18n": "^9.8.0",
     "vue-router": "^4.6.3"
   },
   "devDependencies": {
@@ -26,7 +27,8 @@
   "eslintConfig": {
     "root": true,
     "env": {
-      "node": true
+      "node": true,
+      "vue/setup-compiler-macros": true
     },
     "extends": [
       "plugin:vue/vue3-essential",
@@ -35,6 +37,9 @@
     "parserOptions": {
       "parser": "@babel/eslint-parser",
       "requireConfigFile": false
+    },
+    "globals": {
+      "$t": "readonly"
     },
     "rules": {}
   },
