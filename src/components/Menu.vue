@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import * as Icons from '@element-plus/icons-vue'
@@ -92,19 +92,20 @@ export default {
       }
     }
 
-    const handleTokenChanged = (event) => {
-      if (event.detail?.accessToken) {
-        fetchMenuTree()
-      }
-    }
-
     onMounted(() => {
       tryFetchWithToken()
-      window.addEventListener('auth-token-changed', handleTokenChanged)
-    })
-
-    onBeforeUnmount(() => {
-      window.removeEventListener('auth-token-changed', handleTokenChanged)
+      // Poll for token availability if not immediately available
+      const checkTokenInterval = setInterval(() => {
+        if (!loadedFromServer.value && getAccessToken()) {
+          fetchMenuTree()
+          clearInterval(checkTokenInterval)
+        }
+      }, 100)
+      
+      // Clear interval after 5 seconds to avoid infinite polling
+      setTimeout(() => {
+        clearInterval(checkTokenInterval)
+      }, 5000)
     })
 
     watch(

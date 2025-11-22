@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { getUserInfo } from '../utils/auth'
 import {
   User,
@@ -84,7 +84,7 @@ export default {
     const userInfo = ref(getUserInfo() || {})
     const my = ref({
       avatar: DEFAULT_AVATAR,
-      username: 'YAOMIANWEI'
+      username: 'Username'
     })
     const userInfoDialogVisible = ref(false)
     const logoutDialogVisible = ref(false)
@@ -173,12 +173,7 @@ export default {
       return avatar
     })
 
-    const handleUserInfoChanged = (event) => {
-      userInfo.value = event.detail || {}
-    }
-
     onMounted(async () => {
-      window.addEventListener('auth-userinfo-changed', handleUserInfoChanged)
       try {
         const data = await getMyInfoApi()
         if (data) {
@@ -187,10 +182,6 @@ export default {
       } catch (error) {
         console.error('Failed to get user information:', error)
       }
-    })
-
-    onBeforeUnmount(() => {
-      window.removeEventListener('auth-userinfo-changed', handleUserInfoChanged)
     })
 
     return {

@@ -2,25 +2,47 @@
  * Authentication utility functions
  */
 
+// Memory cache for tokens to avoid timing issues
+let tokenCache = {
+  accessToken: null,
+  refreshToken: null
+}
+
 /**
  * Check if user is authenticated
  */
 export function isAuthenticated() {
-  return !!(localStorage.getItem('access_token') || sessionStorage.getItem('access_token'))
+  return !!(tokenCache.accessToken || localStorage.getItem('access_token') || sessionStorage.getItem('access_token'))
 }
 
 /**
  * Get access token
+ * Priority: memory cache > localStorage > sessionStorage
  */
 export function getAccessToken() {
-  return localStorage.getItem('access_token') || sessionStorage.getItem('access_token')
+  if (tokenCache.accessToken) {
+    return tokenCache.accessToken
+  }
+  const token = localStorage.getItem('access_token') || sessionStorage.getItem('access_token')
+  if (token) {
+    tokenCache.accessToken = token
+  }
+  return token
 }
 
 /**
  * Get refresh token
+ * Priority: memory cache > localStorage > sessionStorage
  */
 export function getRefreshToken() {
-  return localStorage.getItem('refresh_token') || sessionStorage.getItem('refresh_token')
+  if (tokenCache.refreshToken) {
+    return tokenCache.refreshToken
+  }
+  const token = localStorage.getItem('refresh_token') || sessionStorage.getItem('refresh_token')
+  if (token) {
+    tokenCache.refreshToken = token
+  }
+  return token
 }
 
 /**
@@ -30,35 +52,34 @@ export function getRefreshToken() {
  * @param {boolean} remember - Whether to remember (use localStorage)
  */
 export function saveTokens(accessToken, refreshToken = null, remember = false) {
+  // Update memory cache first for immediate availability
+  tokenCache.accessToken = accessToken
+  if (refreshToken) {
+    tokenCache.refreshToken = refreshToken
+  }
+  
+  // Then save to storage
   const storage = remember ? localStorage : sessionStorage
   storage.setItem('access_token', accessToken)
   if (refreshToken) {
     storage.setItem('refresh_token', refreshToken)
   }
-  window.dispatchEvent(new CustomEvent('auth-token-changed', {
-    detail: { accessToken, refreshToken, remember }
-  }))
 }
 
 /**
  * Clear tokens
  */
 export function clearTokens() {
-  const hadToken = !!getAccessToken()
+  tokenCache.accessToken = null
+  tokenCache.refreshToken = null
+  
+  // Then clear storage
   localStorage.removeItem('access_token')
   localStorage.removeItem('refresh_token')
   localStorage.removeItem('userInfo')
   sessionStorage.removeItem('access_token')
   sessionStorage.removeItem('refresh_token')
   sessionStorage.removeItem('userInfo')
-  if (hadToken) {
-    window.dispatchEvent(new CustomEvent('auth-token-changed', {
-      detail: { accessToken: null, refreshToken: null }
-    }))
-  }
-  window.dispatchEvent(new CustomEvent('auth-userinfo-changed', {
-    detail: null
-  }))
 }
 
 /**
@@ -69,9 +90,6 @@ export function clearTokens() {
 export function saveUserInfo(userInfo, remember = false) {
   const storage = remember ? localStorage : sessionStorage
   storage.setItem('userInfo', JSON.stringify(userInfo))
-  window.dispatchEvent(new CustomEvent('auth-userinfo-changed', {
-    detail: userInfo
-  }))
 }
 
 /**

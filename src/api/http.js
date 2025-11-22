@@ -16,6 +16,15 @@ const service = axios.create({
 service.interceptors.request.use(
   (config) => {
     const token = getAccessToken()
+    if (!token && !config._retried) {
+      config._retried = true
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          config.headers.Authorization = `Bearer ${getAccessToken() || ''}`
+          resolve(config)
+        }, 120)
+      })
+    }
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }

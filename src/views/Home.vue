@@ -74,7 +74,6 @@ export default {
         }
         saveUserInfo(mergedTokenInfo, remember)
         tokenInfo.value = mergedTokenInfo
-        ElMessage.success('Login successful!')
         router.replace({ name: 'Dashboard' })
       } catch (error) {
         console.error('OAuth callback error:', error)
