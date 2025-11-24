@@ -36,8 +36,8 @@ const routes = [
       },
       {
         path: '/system/users',
-        name: 'UserList',
-        component: () => import('@/views/UserList.vue'),
+        name: 'UserDataList',
+        component: () => import('@/views/users/UserDataList.vue'),
         meta: {
           title: '用户管理',
           requiresAuth: true
