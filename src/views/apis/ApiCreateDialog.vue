@@ -79,7 +79,7 @@ const onCancel = () => {
     method: '',
     path: '',
     permlabel: '',
-    module_key: ''
+    moduleKey: ''
   }
   props.onCancel()
 }
