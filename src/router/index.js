@@ -60,6 +60,15 @@ const routes = [
           title: 'API管理',
           requiresAuth: true
         }
+      },
+      {
+        path: '/system/whitelist',
+        name: 'WhitelistDataList',
+        component: () => import('@/views/whitelist/WhitelistDataList.vue'),
+        meta: {
+          title: '白名单管理',
+          requiresAuth: true
+        }
       }
     ]
   },

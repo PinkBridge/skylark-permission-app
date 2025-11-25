@@ -81,6 +81,13 @@ const enMessages = {
   PathRequired: 'Please enter path',
   PermLabelRequired: 'Please enter permission label',
   ModuleKeyRequired: 'Please enter module key',
+  RemarkLabel: 'Remark',
+  EnableLabel: 'Enable',
+  DisableLabel: 'Disable',
+  Enabled: 'Enabled',
+  Enable: 'Enable',
+  Disable: 'Disable',
+  EnableRequired: 'Please select enable status',
 }
 
 export default enMessages

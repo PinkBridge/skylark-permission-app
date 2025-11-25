@@ -81,6 +81,14 @@ const zhMessages = {
   PathRequired: '请输入路径',
   PermLabelRequired: '请输入权限标签',
   ModuleKeyRequired: '请输入模块键',
+  RemarkLabel: '备注',
+  EnableLabel: '启用',
+  DisableLabel: '禁用',
+  Enabled: '启用',
+  Enable: '启用',
+  Disable: '禁用',
+  EnableRequired: '请选择启用状态',
+  DisableRequired: '请选择禁用状态',
 }
 
 export default zhMessages
