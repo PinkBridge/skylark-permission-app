@@ -61,7 +61,6 @@ const createDialogVisible = ref(false)
 const editDialogVisible = ref(false)
 const detailRow = ref({})
 const editRow = ref({})
-const searchParams = ref({})
 
 // init data
 const initData = () => {
@@ -69,24 +68,11 @@ const initData = () => {
   currentPage.value = 1
   pageSize.value = 10
   total.value = 0
-  searchParams.value = {}
-  fetchData()
-}
-
-// fetch data with search params and sort by create_time desc
-const fetchData = () => {
-  const params = {
-    ...searchParams.value,
-    sort: 'create_time',
-    order: 'desc'
-  }
-  getApiPage(currentPage.value, pageSize.value, { params }).then(response => {
-    tableData.value = response.records || []
-    currentPage.value = response.page || currentPage.value
-    pageSize.value = response.size || pageSize.value
-    total.value = response.total || 0
-  }).catch(error => {
-    console.error('Failed to get API list:', error)
+  getApiPage(currentPage.value, pageSize.value).then(response => {
+    tableData.value = response.records
+    currentPage.value = response.page
+    pageSize.value = response.size
+    total.value = response.total
   })
 }
 
@@ -97,18 +83,22 @@ const handleReset = () => {
 
 // refresh data
 const handleRefresh = () => {
-  fetchData()
+  getApiPage(currentPage.value, pageSize.value).then(response => {
+    tableData.value = response.records
+    currentPage.value = response.page
+    pageSize.value = response.size
+    total.value = response.total
+  })
 }
 
 // filter data
 const handleSearch = (params) => {
-  searchParams.value = {
-    path: params.path || '',
-    permlabel: params.permlabel || '',
-    module_key: params.module_key || ''
-  }
-  currentPage.value = 1
-  fetchData()
+  getApiPage(currentPage.value, pageSize.value, params).then(response => {
+    tableData.value = response.records
+    currentPage.value = response.page
+    pageSize.value = response.size
+    total.value = response.total
+  })
 }
 
 // new record
@@ -172,13 +162,23 @@ const handleDelete = (id) => {
 // change page size
 const handleSizeChange = (size) => {
   pageSize.value = size
-  fetchData()
+  getApiPage(currentPage.value, pageSize.value).then(response => {
+    tableData.value = response.records
+    currentPage.value = response.page
+    pageSize.value = response.size
+    total.value = response.total
+  })
 }
 
 // change current page
 const handleCurrentChange = (page) => {
   currentPage.value = page
-  fetchData()
+  getApiPage(currentPage.value, pageSize.value).then(response => {
+    tableData.value = response.records
+    currentPage.value = response.page
+    pageSize.value = response.size
+    total.value = response.total
+  })
 }
 
 // mounted

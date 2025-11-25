@@ -7,7 +7,7 @@
       <el-input v-model="formInline.permlabel" :placeholder="t('PermLabelLabel')" clearable />
     </el-form-item>
     <el-form-item :label="t('ModuleKeyLabel')">
-      <el-input v-model="formInline.module_key" :placeholder="t('ModuleKeyLabel')" clearable />
+      <el-input v-model="formInline.moduleKey" :placeholder="t('ModuleKeyLabel')" clearable />
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="onSubmit" :icon="Search">{{ t('QueryLabel') }}</el-button>
@@ -28,7 +28,7 @@ const { t } = useI18n()
 const formInline = reactive({
   path: '',
   permlabel: '',
-  module_key: ''
+  moduleKey: ''
 })
 
 const onSubmit = () => {
@@ -38,7 +38,7 @@ const onSubmit = () => {
 const onReset = () => {
   formInline.path = ''
   formInline.permlabel = ''
-  formInline.module_key = ''
+  formInline.moduleKey = ''
   props.reset(formInline)
 }
 </script>

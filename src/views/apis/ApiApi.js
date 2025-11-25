@@ -6,22 +6,8 @@ const API_PREFIX = "/" + APP_NAME + "/apis"
 /**
  * Get API page
  */
-export function getApiPage(currentPage, pageSize, config = {}) {
-  const params = config.params || {}
-  // Build query string from params
-  const queryParams = new URLSearchParams()
-  if (params.path) queryParams.append('path', params.path)
-  if (params.permlabel) queryParams.append('permlabel', params.permlabel)
-  if (params.module_key) queryParams.append('module_key', params.module_key)
-  if (params.sort) queryParams.append('sort', params.sort)
-  if (params.order) queryParams.append('order', params.order)
-  
-  const queryString = queryParams.toString()
-  const url = queryString 
-    ? `${API_PREFIX}/page?page=${currentPage}&size=${pageSize}&${queryString}`
-    : `${API_PREFIX}/page?page=${currentPage}&size=${pageSize}`
-  
-  return http.get(url)
+export function getApiPage(currentPage, pageSize, params) {
+  return http.get(`${API_PREFIX}/page?page=${currentPage}&size=${pageSize}`, { ...params })
 }
 
 /**
