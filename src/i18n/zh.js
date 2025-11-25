@@ -73,6 +73,14 @@ const zhMessages = {
   Guest: '访客',
   Inactive: '未启用',
   Locked: '已锁定',
+  MethodLabel: '请求方法',
+  PathLabel: '路径',
+  PermLabelLabel: '权限标签',
+  ModuleKeyLabel: '模块键',
+  MethodRequired: '请选择请求方法',
+  PathRequired: '请输入路径',
+  PermLabelRequired: '请输入权限标签',
+  ModuleKeyRequired: '请输入模块键',
 }
 
 export default zhMessages

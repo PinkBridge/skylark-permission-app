@@ -51,6 +51,15 @@ const routes = [
           title: '角色管理',
           requiresAuth: true
         }
+      },
+      {
+        path: '/system/apis',
+        name: 'ApiDataList',
+        component: () => import('@/views/apis/ApiDataList.vue'),
+        meta: {
+          title: 'API管理',
+          requiresAuth: true
+        }
       }
     ]
   },

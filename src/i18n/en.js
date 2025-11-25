@@ -73,6 +73,14 @@ const enMessages = {
   Guest: 'Guest',
   Inactive: 'Inactive',
   Locked: 'Locked',
+  MethodLabel: 'Method',
+  PathLabel: 'Path',
+  PermLabelLabel: 'Permission Label',
+  ModuleKeyLabel: 'Module Key',
+  MethodRequired: 'Please select a method',
+  PathRequired: 'Please enter path',
+  PermLabelRequired: 'Please enter permission label',
+  ModuleKeyRequired: 'Please enter module key',
 }
 
 export default enMessages
