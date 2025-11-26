@@ -92,6 +92,10 @@ const zhMessages = {
   NameLabel: '名称',
   NameRequired: '请输入名称',
   SelectTitle: '选择',
+  ParentNameLabel: '父级名称',
+  HiddenLabel: '隐藏',
+  Yes: '是',
+  No: '否',
 }
 
 export default zhMessages

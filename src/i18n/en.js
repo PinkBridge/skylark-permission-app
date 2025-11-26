@@ -91,6 +91,10 @@ const enMessages = {
   NameLabel: 'Name',
   NameRequired: 'Please enter name',
   SelectTitle: 'Select',
+  ParentNameLabel: 'Parent Name',
+  HiddenLabel: 'Hidden',
+  Yes: 'Yes',
+  No: 'No',
 }
 
 export default enMessages

@@ -69,6 +69,15 @@ const routes = [
           title: '白名单管理',
           requiresAuth: true
         }
+      },
+      {
+        path: '/system/menus',
+        name: 'MenuDataList',
+        component: () => import('@/views/menus/MenuDataList.vue'),
+        meta: {
+          title: '菜单管理',
+          requiresAuth: true
+        }
       }
     ]
   },
