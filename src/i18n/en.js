@@ -111,6 +111,14 @@ const enMessages = {
   AdditionalInformationLabel: 'Additional Information',
   AdditionalInformationPlaceholder: 'Please enter additional information (JSON format)',
   AutoapproveLabel: 'Auto Approve',
+  CodeLabel: 'Code',
+  CodeRequired: 'Please enter code',
+  ParentOrganizationLabel: 'Parent Organization',
+  TypeLabel: 'Type',
+  TypeRequired: 'Please select type',
+  OrgTypeCompany: 'Company',
+  OrgTypeDepartment: 'Department',
+  OrgTypeTeam: 'Team',
 }
 
 export default enMessages

@@ -112,6 +112,14 @@ const zhMessages = {
   AdditionalInformationLabel: '附加信息',
   AdditionalInformationPlaceholder: '请输入附加信息（JSON格式）',
   AutoapproveLabel: '自动批准',
+  CodeLabel: '编码',
+  CodeRequired: '请输入编码',
+  ParentOrganizationLabel: '上级组织',
+  TypeLabel: '类型',
+  TypeRequired: '请选择类型',
+  OrgTypeCompany: '公司',
+  OrgTypeDepartment: '部门',
+  OrgTypeTeam: '团队',
 }
 
 export default zhMessages

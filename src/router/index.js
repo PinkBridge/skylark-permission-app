@@ -87,6 +87,15 @@ const routes = [
           title: '应用管理',
           requiresAuth: true
         }
+      },
+      {
+        path: '/system/orgs',
+        name: 'OrgDataList',
+        component: () => import('@/views/orgs/OrgDataList.vue'),
+        meta: {
+          title: '组织管理',
+          requiresAuth: true
+        }
       }
     ]
   },
