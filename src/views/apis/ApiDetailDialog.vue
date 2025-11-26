@@ -6,9 +6,9 @@
       <el-descriptions-item :label="t('MethodLabel')">{{ apiInfo.method }}</el-descriptions-item>
       <el-descriptions-item :label="t('PathLabel')">{{ apiInfo.path }}</el-descriptions-item>
       <el-descriptions-item :label="t('PermLabelLabel')">{{ apiInfo.permlabel }}</el-descriptions-item>
-      <el-descriptions-item :label="t('ModuleKeyLabel')">{{ apiInfo.module_key }}</el-descriptions-item>
-      <el-descriptions-item :label="t('CreatedAtLabel')">{{ apiInfo.create_time }}</el-descriptions-item>
-      <el-descriptions-item :label="t('UpdatedAtLabel')">{{ apiInfo.update_time }}</el-descriptions-item>
+      <el-descriptions-item :label="t('ModuleKeyLabel')">{{ apiInfo.moduleKey }}</el-descriptions-item>
+      <el-descriptions-item :label="t('CreatedAtLabel')">{{ apiInfo.createTime }}</el-descriptions-item>
+      <el-descriptions-item :label="t('UpdatedAtLabel')">{{ apiInfo.updateTime }}</el-descriptions-item>
     </el-descriptions>
     <template #footer>
       <div class="dialog-footer">

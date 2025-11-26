@@ -22,7 +22,7 @@ service.interceptors.request.use(
         setTimeout(() => {
           config.headers.Authorization = `Bearer ${getAccessToken() || ''}`
           resolve(config)
-        }, 120)
+        }, 500)
       })
     }
     if (token) {

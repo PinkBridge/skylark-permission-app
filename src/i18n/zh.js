@@ -89,6 +89,9 @@ const zhMessages = {
   Disable: '禁用',
   EnableRequired: '请选择启用状态',
   DisableRequired: '请选择禁用状态',
+  NameLabel: '名称',
+  NameRequired: '请输入名称',
+  SelectTitle: '选择',
 }
 
 export default zhMessages

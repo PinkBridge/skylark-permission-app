@@ -88,6 +88,9 @@ const enMessages = {
   Enable: 'Enable',
   Disable: 'Disable',
   EnableRequired: 'Please select enable status',
+  NameLabel: 'Name',
+  NameRequired: 'Please enter name',
+  SelectTitle: 'Select',
 }
 
 export default enMessages

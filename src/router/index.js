@@ -45,8 +45,8 @@ const routes = [
       },
       {
         path: '/system/roles',
-        name: 'RoleList',
-        component: () => import('@/views/RoleList.vue'),
+        name: 'RoleDataList',
+        component: () => import('@/views/roles/RoleDataList.vue'),
         meta: {
           title: '角色管理',
           requiresAuth: true
