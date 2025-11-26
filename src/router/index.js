@@ -78,6 +78,15 @@ const routes = [
           title: '菜单管理',
           requiresAuth: true
         }
+      },
+      {
+        path: '/system/apps',
+        name: 'AppDataList',
+        component: () => import('@/views/apps/AppDataList.vue'),
+        meta: {
+          title: '应用管理',
+          requiresAuth: true
+        }
       }
     ]
   },

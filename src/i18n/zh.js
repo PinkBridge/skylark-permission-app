@@ -96,6 +96,22 @@ const zhMessages = {
   HiddenLabel: '隐藏',
   Yes: '是',
   No: '否',
+  ClientIdLabel: '客户端ID',
+  ClientIdRequired: '请输入客户端ID',
+  ResourceIdsLabel: '资源ID',
+  ResourceIdsPlaceholder: '请输入资源ID，多个用逗号分隔',
+  ScopeLabel: '作用域',
+  ScopePlaceholder: '请输入作用域，多个用逗号分隔',
+  AuthorizedGrantTypesLabel: '授权类型',
+  AuthorizedGrantTypesPlaceholder: '请输入授权类型，多个用逗号分隔',
+  WebServerRedirectUriLabel: '重定向URI',
+  AuthoritiesLabel: '权限',
+  AuthoritiesPlaceholder: '请输入权限，多个用逗号分隔',
+  AccessTokenValidityLabel: '访问令牌有效期',
+  RefreshTokenValidityLabel: '刷新令牌有效期',
+  AdditionalInformationLabel: '附加信息',
+  AdditionalInformationPlaceholder: '请输入附加信息（JSON格式）',
+  AutoapproveLabel: '自动批准',
 }
 
 export default zhMessages

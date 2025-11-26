@@ -14,7 +14,7 @@
         <el-input v-model="form.permlabel" />
       </el-form-item>
       <el-form-item :label="t('ModuleKeyLabel')" prop="moduleKey">
-        <el-input v-model="form.module_key" />
+        <el-input v-model="form.moduleKey" />
       </el-form-item>
     </el-form>
     <template #footer>
@@ -41,7 +41,7 @@ const form = ref({
   method: '',
   path: '',
   permlabel: '',
-  module_key: ''
+  moduleKey: ''
 })
 
 const methodOptions = ref([

@@ -95,6 +95,22 @@ const enMessages = {
   HiddenLabel: 'Hidden',
   Yes: 'Yes',
   No: 'No',
+  ClientIdLabel: 'Client ID',
+  ClientIdRequired: 'Please enter client ID',
+  ResourceIdsLabel: 'Resource IDs',
+  ResourceIdsPlaceholder: 'Please enter resource IDs, separated by commas',
+  ScopeLabel: 'Scope',
+  ScopePlaceholder: 'Please enter scope, separated by commas',
+  AuthorizedGrantTypesLabel: 'Authorized Grant Types',
+  AuthorizedGrantTypesPlaceholder: 'Please enter authorized grant types, separated by commas',
+  WebServerRedirectUriLabel: 'Redirect URI',
+  AuthoritiesLabel: 'Authorities',
+  AuthoritiesPlaceholder: 'Please enter authorities, separated by commas',
+  AccessTokenValidityLabel: 'Access Token Validity',
+  RefreshTokenValidityLabel: 'Refresh Token Validity',
+  AdditionalInformationLabel: 'Additional Information',
+  AdditionalInformationPlaceholder: 'Please enter additional information (JSON format)',
+  AutoapproveLabel: 'Auto Approve',
 }
 
 export default enMessages
