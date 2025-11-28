@@ -9,6 +9,12 @@
     <el-table :data="tableData" style="width: 100%" stripe border show-overflow-tooltip>
       <el-table-column fixed prop="id" :label="t('IDLabel')" />
       <el-table-column prop="username" :label="t('UsernameLabel')" />
+      <el-table-column prop="avatar" :label="t('AvatarLabel')" width="120">
+        <template #default="{ row }">
+          <el-image v-if="row.avatar" style="width: 40px; height: 40px" :src="row.avatar" fit="contain" />
+          <span v-else>-</span>
+        </template>
+      </el-table-column>
       <el-table-column prop="email" :label="t('EmailLabel')" />
       <el-table-column prop="phone" :label="t('PhoneLabel')" />
       <el-table-column prop="status" :label="t('StatusLabel')" />

@@ -119,6 +119,14 @@ const enMessages = {
   OrgTypeCompany: 'Company',
   OrgTypeDepartment: 'Department',
   OrgTypeTeam: 'Team',
+  ContactNameLabel: 'Contact Name',
+  ContactPhoneLabel: 'Contact Phone',
+  ContactEmailLabel: 'Contact Email',
+  DomainLabel: 'Domain',
+  LogoLabel: 'Logo',
+  ExpireTimeLabel: 'Expire Time',
+  SystemNameLabel: 'System Name',
+  AvatarLabel: 'Avatar',
 }
 
 export default enMessages

@@ -3,9 +3,9 @@
     <div class="index-content">
       <div class="logo-section">
         <div class="logo-placeholder">
-          <img src="@/assets/logo.png" alt="Logo" style="width: 120px; height: 120px; border-radius: 50%;" />
+          <img v-if="tenant && tenant.logo" :src="tenant.logo ? tenant.logo : '@/assets/logo.png'" alt="Logo" style="width: 120px; height: 120px; border-radius: 50%;" />
         </div>
-        <h1 class="app-title">Skylark管理系统</h1>
+        <h1 class="app-title">{{ tenant && tenant.systemName ? tenant.systemName : 'Skylark' }}</h1>
       </div>
 
       <div class="action-section">
@@ -34,6 +34,8 @@
 import { ElMessage } from 'element-plus'
 import { Avatar } from '@element-plus/icons-vue'
 import { getAuthorizationUrl } from '@/api/oauth'
+import { ref, onMounted } from 'vue'
+import { getTenantByDomain } from '@/utils/tenant'
 
 export default {
   name: 'WelcomePage',
@@ -49,10 +51,21 @@ export default {
       ElMessage.info('Registration function under development...')
     }
 
+    const tenant = ref(null)
+
+    onMounted(() => {
+      getTenantByDomain(window.location.hostname).then(tenantData => {
+        if (tenantData) {
+          tenant.value = tenantData
+        }
+      })
+    })
+
     return {
       handleLogin,
       handleRegister,
-      Avatar
+      Avatar,
+      tenant
     }
   }
 }

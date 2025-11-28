@@ -120,6 +120,14 @@ const zhMessages = {
   OrgTypeCompany: '公司',
   OrgTypeDepartment: '部门',
   OrgTypeTeam: '团队',
+  ContactNameLabel: '联系人姓名',
+  ContactPhoneLabel: '联系人电话',
+  ContactEmailLabel: '联系人邮箱',
+  DomainLabel: '域名',
+  LogoLabel: 'Logo',
+  ExpireTimeLabel: '到期时间',
+  SystemNameLabel: '系统名称',
+  AvatarLabel: '头像',
 }
 
 export default zhMessages

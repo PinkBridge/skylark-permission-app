@@ -2,10 +2,15 @@
   <router-view />
 </template>
 
-<script>
-export default {
-  name: 'App'
-}
+<script setup name="App">
+import { onMounted } from 'vue'
+import { getTenantByDomain } from '@/utils/tenant'
+
+onMounted(() => {
+  const domain = window.location.hostname
+  getTenantByDomain(domain)
+})
+
 </script>
 
 <style>

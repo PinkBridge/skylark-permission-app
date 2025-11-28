@@ -2,7 +2,11 @@
   <div class="header-container">
     <div class="system-title">
       <div>
-        <span>{{ systemTitle }}</span>
+        <div style="display: flex; align-items: center; justify-content: center;">
+          <img v-if="tenant && tenant.logo" :src="tenant.logo ? tenant.logo : '@/assets/logo.png'" 
+            alt="Logo" style="width: 30px; height: 30px; border-radius: 30%; margin-right: 8px;" />
+          <span style="display: flex; align-items: center; font-size: 20px;">{{ tenant && tenant.systemName ? tenant.systemName : 'Skylark' }}</span>
+        </div>
       </div>
     </div>
     <div class="header-blank"></div>
@@ -19,9 +23,9 @@
 
 <script>
 import { ref } from 'vue'
-import UserAvatarComponent from './UserAvatar.vue'
-import LanguageComponent from './LanguageSelect.vue'
-
+import UserAvatarComponent from '@/components/UserAvatar.vue'
+import LanguageComponent from '@/components/LanguageSelect.vue'
+import { getTenant } from '@/utils/tenant'
 export default {
   name: 'HeaderComponent',
   components: {
@@ -29,10 +33,10 @@ export default {
     LanguageComponent,
   },
   setup() {
-    const systemTitle = ref(process.env.VUE_APP_SYSTEM_TITLE
-     || 'Skylar Permission App')
+    const tenant = ref(null)
+    tenant.value = getTenant()
     return {
-      systemTitle
+      tenant,
     }
   }
 }

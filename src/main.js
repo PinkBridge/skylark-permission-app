@@ -11,7 +11,9 @@ import i18n from './i18n/index'
 const app = createApp(App)
  
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
-  app.component(key, component)
+  if (component) {
+    app.component(key, component)
+  }
 }
 
 app.use(i18n)

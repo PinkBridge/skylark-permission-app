@@ -4,15 +4,11 @@
     <template v-for="group in menuItems" :key="group.id">
       <el-sub-menu :index="String(group.id)">
         <template #title>
-          <el-icon>
-            <component :is="resolveIcon(group.icon)" />
-          </el-icon>
+          <component v-if="group.icon" :is="Icons[group.icon]" class="el-icon" />
           <span>{{ group.name }}</span>
         </template>
         <el-menu-item v-for="item in group.children" :key="item.id" :index="resolveMenuIndex(item)">
-          <el-icon>
-            <component :is="resolveIcon(item.icon)" />
-          </el-icon>
+          <component v-if="item.icon" :is="Icons[item.icon]" class="el-icon" />
           <span>{{ item.name }}</span>
         </el-menu-item>
       </el-sub-menu>
@@ -121,7 +117,8 @@ export default {
       activeMenu,
       menuItems,
       resolveIcon,
-      resolveMenuIndex
+      resolveMenuIndex,
+      Icons
     }
   }
 }

@@ -96,6 +96,15 @@ const routes = [
           title: '组织管理',
           requiresAuth: true
         }
+      },
+      {
+        path: '/system/tenants',
+        name: 'TenantDataList',
+        component: () => import('@/views/tenants/TenantDataList.vue'),
+        meta: {
+          title: '租户管理',
+          requiresAuth: true
+        }
       }
     ]
   },
