@@ -37,3 +37,17 @@ export function updateTenantById(id, tenant) {
 export function createTenant(tenant) {
   return http.post(`${TENANT_PREFIX}`, tenant)
 }
+
+/**
+ * Upload logo image
+ * @param {File} file - Image file to upload
+ */
+export function uploadLogo(file) {
+  const formData = new FormData()
+  formData.append('file', file)
+  return http.post(`${TENANT_PREFIX}/logo/upload`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}

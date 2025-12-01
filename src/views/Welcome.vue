@@ -3,30 +3,28 @@
     <div class="index-content">
       <div class="logo-section">
         <div class="logo-placeholder">
-          <img v-if="tenant && tenant.logo" :src="tenant.logo ? tenant.logo : '@/assets/logo.png'" alt="Logo" style="width: 120px; height: 120px; border-radius: 50%;" />
+          <img v-if="tenant && tenant.logo" :src="tenant.logo ? tenant.logo : '@/assets/logo.png'" alt="Logo"
+            style="width: 120px; height: 120px; border-radius: 50%;" />
         </div>
         <h1 class="app-title">{{ tenant && tenant.systemName ? tenant.systemName : 'Skylark' }}</h1>
       </div>
 
       <div class="action-section">
-        <el-button 
-          type="primary" 
-          size="large" 
-          class="action-button"
-          @click="handleLogin"
-        >
+        <el-button type="primary" size="large" class="action-button" @click="handleLogin">
           Login
         </el-button>
-        <el-button 
-          type="default" 
-          size="large" 
-          class="action-button"
-          @click="handleRegister"
-        >
+        <el-button type="default" size="large" class="action-button" @click="handleRegister">
           Register
         </el-button>
       </div>
-    </div>
+      <div class="footer-section">
+        <p>© 2025 {{ tenant && tenant.name ? tenant.name : 'Skylark' }}. All rights reserved.</p>
+        <p>Powered by {{ tenant && tenant.name ? tenant.name : 'Skylark' }}</p>
+        <p>Address: {{ tenant && tenant.address ? tenant.address : '123 Main St, Anytown, USA' }}</p>
+        <p>Email: <a href="mailto:{{ tenant && tenant.contactEmail ? tenant.contactEmail : 'support@skylark.com' }}" target="_blank">{{ tenant && tenant.contactEmail ? tenant.contactEmail : 'support@skylark.com' }}</a></p>
+        <p>Phone: <a href="tel:{{ tenant && tenant.contactPhone ? tenant.contactPhone : '+1234567890' }}" target="_blank">{{ tenant && tenant.contactPhone ? tenant.contactPhone : '+1234567890' }}</a></p>
+      </div>
+    </div>  
   </div>
 </template>
 
@@ -77,7 +75,7 @@ export default {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #667eea 0%, #667eea 100%);
   padding: 20px;
 }
 
@@ -115,7 +113,6 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #667eea;
 }
 
 .app-title {
@@ -149,7 +146,7 @@ export default {
 }
 
 .action-button:first-child {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  /* background: linear-gradient(135deg, #667eea 0%, #e6e4e9 100%); */
   border: none;
 }
 
@@ -171,5 +168,14 @@ export default {
   justify-content: center;
   width: 100%;
   height: 100%;
+}
+
+.footer-section {
+  font-size: 14px;
+  margin-top: 20px;
+}
+
+.footer-section p {
+  padding: 3px 0;
 }
 </style>

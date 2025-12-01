@@ -5,6 +5,8 @@
       <el-button type="primary" size="default" :icon="Plus" @click="handleCreate">{{ t('NewButtonLabel') }}</el-button>
       <el-button type="default" size="default" :icon="Refresh" @click="handleRefresh">{{
         t('RefreshButtonLabel') }}</el-button>
+      <el-button type="primary" size="default" >{{
+        t('NewTenantAdminButtonLabel') }}</el-button>
     </div>
     <el-table :data="tableData" style="width: 100%" stripe border show-overflow-tooltip>
       <el-table-column fixed prop="id" :label="t('IDLabel')" width="80" />

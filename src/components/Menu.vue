@@ -1,6 +1,6 @@
 <template>
   <el-menu class="el-menu-vertical" :default-active="activeMenu" router background-color="#001529" 
-  text-color="#fff" active-text-color="#ffd04b">
+  text-color="#fff" active-text-color="#ffd04b"  :default-openeds="defaultOpeneds">
     <template v-for="group in menuItems" :key="group.id">
       <el-sub-menu :index="String(group.id)">
         <template #title>
@@ -47,6 +47,7 @@ export default {
     const activeMenu = ref(route.path.startsWith('/home') ? route.path : '/home')
     const menuItems = ref([])
     const loadedFromServer = ref(false)
+    const defaultOpeneds = ref([])
 
     const resolveIcon = (name) => iconMap[name] || iconMap.Default
     const resolveMenuIndex = (item) => {
@@ -74,6 +75,9 @@ export default {
           menuItems.value = data
           loadedFromServer.value = true
           selectFirstChild()
+          // Default expand all first-level menus
+          defaultOpeneds.value = menuItems.value.map(item => item.id)
+          console.log(defaultOpeneds.value)
         }
       } catch (error) {
         console.error('Failed to get menu:', error)
@@ -118,7 +122,8 @@ export default {
       menuItems,
       resolveIcon,
       resolveMenuIndex,
-      Icons
+      Icons,
+      defaultOpeneds
     }
   }
 }

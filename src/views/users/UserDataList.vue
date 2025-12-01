@@ -7,7 +7,7 @@
         t('RefreshButtonLabel') }}</el-button>
     </div>
     <el-table :data="tableData" style="width: 100%" stripe border show-overflow-tooltip>
-      <el-table-column fixed prop="id" :label="t('IDLabel')" />
+      <el-table-column fixed prop="id" :label="t('IDLabel')" width="80"/>
       <el-table-column prop="username" :label="t('UsernameLabel')" />
       <el-table-column prop="avatar" :label="t('AvatarLabel')" width="120">
         <template #default="{ row }">

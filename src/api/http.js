@@ -2,6 +2,7 @@ import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import { getAccessToken, clearTokens } from '@/utils/auth'
 import i18n from '@/i18n/index'
+import { getTenant } from '@/utils/tenant'
 
 // In vue-i18n@9, use i18n.global.t instead of $t
 const t = (key) => i18n.global.t(key)
@@ -27,6 +28,7 @@ service.interceptors.request.use(
     }
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
+      config.headers['X-Tenant-Id'] = getTenant()?.id
     }
     // Add language header
     const locale = i18n.global.locale.value

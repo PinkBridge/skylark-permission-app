@@ -128,6 +128,12 @@ const zhMessages = {
   ExpireTimeLabel: '到期时间',
   SystemNameLabel: '系统名称',
   AvatarLabel: '头像',
+  NewTenantAdminButtonLabel: '新增租户管理员',
+  UploadTip: '只能上传图片文件，且不超过 2MB',
+  UploadImageOnly: '只能上传图片文件！',
+  UploadImageSizeLimit: '图片大小不能超过 2MB！',
+  UploadImageError: '图片读取失败，请重试',
+  SelectFileButtonLabel: '选择文件',
 }
 
 export default zhMessages

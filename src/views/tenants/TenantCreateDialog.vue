@@ -24,7 +24,18 @@
         <el-input v-model="form.domain" :placeholder="t('DomainLabel')" />
       </el-form-item>
       <el-form-item :label="t('LogoLabel')" prop="logo">
-        <el-input v-model="form.logo" :placeholder="t('LogoLabel')" />
+        <el-upload
+          class="logo-uploader"
+          :show-file-list="false"
+          :before-upload="beforeUpload"
+          :on-success="handleLogoSuccess"
+          :auto-upload="false"
+          accept="image/*"
+        >
+          <img v-if="form.logo" :src="form.logo" class="logo-preview" />
+          <el-icon v-else class="logo-uploader-icon"><Plus /></el-icon>
+        </el-upload>
+        <div class="upload-tip">{{ t('UploadTip') }}</div>
       </el-form-item>
       <el-form-item :label="t('StatusLabel')" prop="status">
         <el-select v-model="form.status" :placeholder="t('StatusLabel')">
@@ -55,6 +66,7 @@ import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { createTenant } from '@/views/tenants/TenantApi'
 import { ElMessage } from 'element-plus'
+import { Plus } from '@element-plus/icons-vue'
 
 const { t } = useI18n()
 
@@ -107,6 +119,32 @@ const onCancel = () => {
   props.onCancel()
 }
 
+const beforeUpload = (file) => {
+  const isImage = file.type.startsWith('image/')
+  const isLt2M = file.size / 1024 / 1024 < 2
+
+  if (!isImage) {
+    ElMessage.error(t('UploadImageOnly'))
+    return false
+  }
+  if (!isLt2M) {
+    ElMessage.error(t('UploadImageSizeLimit'))
+    return false
+  }
+
+  // Convert image to base64
+  const reader = new FileReader()
+  reader.onload = (e) => {
+    form.value.logo = e.target.result
+  }
+  reader.readAsDataURL(file)
+  return false // Prevent auto upload
+}
+
+const handleLogoSuccess = () => {
+  // Not used since we're using base64 conversion
+}
+
 const onSubmit = async () => {
   if (!formRef.value) return
 
@@ -126,6 +164,7 @@ const onSubmit = async () => {
     }
     createTenant(tenant).then(() => {
       formRef.value.resetFields()
+      form.value.logo = ''
       props.onSubmit()
     }).catch(error => {
       console.error('Create tenant failed:', error)
@@ -137,6 +176,44 @@ const onSubmit = async () => {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.logo-uploader {
+  :deep(.el-upload) {
+    border: 1px dashed var(--el-border-color);
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: var(--el-transition-duration-fast);
+    width: 120px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  :deep(.el-upload:hover) {
+    border-color: var(--el-color-primary);
+  }
+}
+
+.logo-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+}
+
+.logo-preview {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  display: block;
+}
+
+.upload-tip {
+  font-size: 12px;
+  color: #606266;
+  margin-top: 8px;
+}
+</style>
 
 

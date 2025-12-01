@@ -127,6 +127,12 @@ const enMessages = {
   ExpireTimeLabel: 'Expire Time',
   SystemNameLabel: 'System Name',
   AvatarLabel: 'Avatar',
+  NewTenantAdminButtonLabel: 'New Tenant Admin',
+  UploadTip: 'Only image files can be uploaded, and the size should not exceed 2MB',
+  UploadImageOnly: 'Only image files can be uploaded!',
+  UploadImageSizeLimit: 'Image size cannot exceed 2MB!',
+  UploadImageError: 'Failed to read image file, please try again',
+  SelectFileButtonLabel: 'Select File',
 }
 
 export default enMessages
