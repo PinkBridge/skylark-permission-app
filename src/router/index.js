@@ -105,6 +105,15 @@ const routes = [
           title: '租户管理',
           requiresAuth: true
         }
+      },
+      {
+        path: '/system/resources',
+        name: 'ResourceDataList',
+        component: () => import('@/views/resources/ResourceDataList.vue'),
+        meta: {
+          title: '资源管理',
+          requiresAuth: true
+        }
       }
     ]
   },

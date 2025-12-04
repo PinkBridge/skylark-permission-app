@@ -2,9 +2,6 @@
   <el-dialog :model-value="visible" :title="t('EditTitle')" align-center destroy-on-close :modal="false"
     modal-penetrable :show-close="false" style="max-width: 700px">
     <el-form ref="formRef" :model="form" :rules="rules" label-position="top">
-      <el-form-item :label="t('IDLabel')" prop="id">
-        <el-input v-model="form.id" :disabled="true" />
-      </el-form-item>
       <el-form-item :label="t('NameLabel')" prop="name">
         <el-input v-model="form.name" :placeholder="t('NameLabel')" />
       </el-form-item>
@@ -14,23 +11,6 @@
       <el-form-item :label="t('SystemNameLabel')" prop="systemName">
         <el-input v-model="form.systemName" :placeholder="t('SystemNameLabel')" />
       </el-form-item>
-      <el-form-item :label="t('DomainLabel')" prop="domain">
-        <el-input v-model="form.domain" :placeholder="t('DomainLabel')" />
-      </el-form-item>
-      <el-form-item :label="t('LogoLabel')" prop="logo">
-        <el-upload
-          class="logo-uploader"
-          :show-file-list="false"
-          :before-upload="beforeUpload"
-          :on-success="handleLogoSuccess"
-          :auto-upload="false"
-          accept="image/*"
-        >
-          <img v-if="logoPreview" :src="logoPreview" class="logo-preview" @error="handleImageError" />
-          <el-icon v-else class="logo-uploader-icon"><Plus /></el-icon>
-        </el-upload>
-        <div class="upload-tip">{{ t('UploadTip') }}</div>
-      </el-form-item>
       <el-form-item :label="t('ContactNameLabel')" prop="contactName">
         <el-input v-model="form.contactName" :placeholder="t('ContactNameLabel')" />
       </el-form-item>
@@ -39,6 +19,13 @@
       </el-form-item>
       <el-form-item :label="t('ContactEmailLabel')" prop="contactEmail">
         <el-input v-model="form.contactEmail" :placeholder="t('ContactEmailLabel')" />
+      </el-form-item>
+      <el-form-item :label="t('DomainLabel')" prop="domain">
+        <el-input v-model="form.domain" :placeholder="t('DomainLabel')" />
+      </el-form-item>
+      <el-form-item :label="t('LogoLabel')" prop="logo">
+        <ResourceUpload :fileList="[form.logo]" :onSuccess="handleUploadSuccess" />
+        <div class="upload-tip">{{ t('UploadTip') }}</div>
       </el-form-item>
       <el-form-item :label="t('StatusLabel')" prop="status">
         <el-select v-model="form.status" :placeholder="t('StatusLabel')">
@@ -69,14 +56,13 @@ import { ref, watch, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { getTenantById, updateTenantById } from '@/views/tenants/TenantApi'
 import { ElMessage } from 'element-plus'
-import { Plus } from '@element-plus/icons-vue'
+import ResourceUpload from '@/components/ResourceUpload.vue'
 
 const { t } = useI18n()
 
 const props = defineProps(['visible', 'row', 'onSubmit', 'onCancel'])
 
 const formRef = ref(null)
-const logoPreview = ref('')
 const form = ref({
   id: '',
   name: '',
@@ -122,8 +108,6 @@ const fetchTenantData = () => {
         status: data.status || 'ACTIVE',
         expireTime: data.expireTime || '',
       }
-      // Set logo preview
-      logoPreview.value = data.logo || ''
     }).catch(error => {
       console.error('Failed to get tenant information:', error)
       ElMessage.error(error.message || 'Failed to get tenant information')
@@ -131,47 +115,11 @@ const fetchTenantData = () => {
   }
 }
 
-const beforeUpload = (file) => {
-  const isImage = file.type.startsWith('image/')
-  const isLt2M = file.size / 1024 / 1024 < 2
-
-  if (!isImage) {
-    ElMessage.error(t('UploadImageOnly'))
-    return false
-  }
-  if (!isLt2M) {
-    ElMessage.error(t('UploadImageSizeLimit'))
-    return false
-  }
-
-  // Convert image to base64
-  const reader = new FileReader()
-  reader.onload = (e) => {
-    if (e.target && e.target.result) {
-      const base64 = e.target.result
-      form.value.logo = base64
-      logoPreview.value = base64
-      console.log('Logo updated, preview URL length:', base64 ? base64.length : 0)
-    }
-  }
-  reader.onerror = (error) => {
-    console.error('FileReader error:', error)
-    ElMessage.error(t('UploadImageError') || 'Failed to read image file')
-  }
-  reader.readAsDataURL(file)
-  return false // Prevent auto upload
+const handleUploadSuccess = (url) => {
+  console.log('handleUploadSuccess', url)
+  form.value.logo = url
 }
 
-const handleLogoSuccess = () => {
-  // Not used since we're using base64 conversion
-}
-
-const handleImageError = (e) => {
-  console.error('Image load error:', e)
-  // If image fails to load, clear it
-  form.value.logo = ''
-  logoPreview.value = ''
-}
 
 const onSubmit = async () => {
   if (!formRef.value) return
@@ -205,7 +153,6 @@ const onCancel = () => {
   if (formRef.value) {
     formRef.value.resetFields()
   }
-  logoPreview.value = ''
   props.onCancel()
 }
 

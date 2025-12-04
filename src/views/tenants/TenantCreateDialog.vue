@@ -24,17 +24,7 @@
         <el-input v-model="form.domain" :placeholder="t('DomainLabel')" />
       </el-form-item>
       <el-form-item :label="t('LogoLabel')" prop="logo">
-        <el-upload
-          class="logo-uploader"
-          :show-file-list="false"
-          :before-upload="beforeUpload"
-          :on-success="handleLogoSuccess"
-          :auto-upload="false"
-          accept="image/*"
-        >
-          <img v-if="form.logo" :src="form.logo" class="logo-preview" />
-          <el-icon v-else class="logo-uploader-icon"><Plus /></el-icon>
-        </el-upload>
+        <ResourceUpload :fileList="form.logo" :onSuccess="handleUploadSuccess" />
         <div class="upload-tip">{{ t('UploadTip') }}</div>
       </el-form-item>
       <el-form-item :label="t('StatusLabel')" prop="status">
@@ -66,7 +56,7 @@ import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { createTenant } from '@/views/tenants/TenantApi'
 import { ElMessage } from 'element-plus'
-import { Plus } from '@element-plus/icons-vue'
+import ResourceUpload from '@/components/ResourceUpload.vue'
 
 const { t } = useI18n()
 
@@ -119,32 +109,6 @@ const onCancel = () => {
   props.onCancel()
 }
 
-const beforeUpload = (file) => {
-  const isImage = file.type.startsWith('image/')
-  const isLt2M = file.size / 1024 / 1024 < 2
-
-  if (!isImage) {
-    ElMessage.error(t('UploadImageOnly'))
-    return false
-  }
-  if (!isLt2M) {
-    ElMessage.error(t('UploadImageSizeLimit'))
-    return false
-  }
-
-  // Convert image to base64
-  const reader = new FileReader()
-  reader.onload = (e) => {
-    form.value.logo = e.target.result
-  }
-  reader.readAsDataURL(file)
-  return false // Prevent auto upload
-}
-
-const handleLogoSuccess = () => {
-  // Not used since we're using base64 conversion
-}
-
 const onSubmit = async () => {
   if (!formRef.value) return
 
@@ -173,6 +137,11 @@ const onSubmit = async () => {
   } catch (error) {
     console.error('Form validation failed:', error)
   }
+}
+
+const handleUploadSuccess = (url) => {
+  console.log('handleUploadSuccess', url)
+  form.value.logo = url
 }
 </script>
 

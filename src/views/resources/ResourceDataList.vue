@@ -1,36 +1,37 @@
 <template>
   <el-card shadow="always">
-    <TenantSearchForm :search="handleSearch" :reset="handleReset" />
+    <ResourceSearchForm :search="handleSearch" :reset="handleReset" />
     <div class="buttons-block">
       <el-button type="primary" size="default" :icon="Plus" @click="handleCreate">{{ t('NewButtonLabel') }}</el-button>
       <el-button type="default" size="default" :icon="Refresh" @click="handleRefresh">{{
         t('RefreshButtonLabel') }}</el-button>
-      <el-button type="primary" size="default" >{{
-        t('NewTenantAdminButtonLabel') }}</el-button>
     </div>
     <el-table :data="tableData" style="width: 100%" stripe border show-overflow-tooltip>
       <el-table-column fixed prop="id" :label="t('IDLabel')" width="80" />
       <el-table-column prop="name" :label="t('NameLabel')" min-width="150" />
-      <el-table-column prop="code" :label="t('CodeLabel')" min-width="120" />
-      <el-table-column prop="systemName" :label="t('SystemNameLabel')" min-width="150" />
-      <el-table-column prop="status" :label="t('StatusLabel')" width="100">
+      <el-table-column prop="originalName" :label="t('OriginalNameLabel')" min-width="150" />
+      <el-table-column prop="fileType" :label="t('FileTypeLabel')" width="120">
         <template #default="{ row }">
-          <el-tag :type="row.status === 'ACTIVE' ? 'success' : 'danger'">
-            {{ row.status === 'ACTIVE' ? t('Active') : t('Disabled') }}
-          </el-tag>
+          <el-tag v-if="row.fileType === 'IMAGE'" type="primary">{{ t('FileTypeImage') }}</el-tag>
+          <el-tag v-else-if="row.fileType === 'DOCUMENT'" type="success">{{ t('FileTypeDocument') }}</el-tag>
+          <el-tag v-else-if="row.fileType === 'VIDEO'" type="warning">{{ t('FileTypeVideo') }}</el-tag>
+          <el-tag v-else-if="row.fileType === 'AUDIO'" type="info">{{ t('FileTypeAudio') }}</el-tag>
+          <el-tag v-else-if="row.fileType === 'OTHER'" type="">{{ t('FileTypeOther') }}</el-tag>
+          <span v-else>{{ row.fileType || '-' }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="domain" :label="t('DomainLabel')" min-width="180" show-overflow-tooltip />
-      <el-table-column prop="logo" :label="t('LogoLabel')" width="120">
+      <el-table-column prop="fileSize" :label="t('FileSizeLabel')" width="120">
         <template #default="{ row }">
-          <el-image v-if="row.logo" style="width: 40px; height: 40px" :src="row.logo" fit="contain" />
+          {{ formatFileSize(row.fileSize) }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="mimeType" :label="t('MimeTypeLabel')" min-width="120" show-overflow-tooltip />
+      <el-table-column prop="url" :label="t('UrlLabel')" min-width="200" show-overflow-tooltip>
+        <template #default="{ row }">
+          <a v-if="row.url" :href="row.url" target="_blank" style="color: #409eff;">{{ row.url }}</a>
           <span v-else>-</span>
         </template>
       </el-table-column>
-      <el-table-column prop="contactName" :label="t('ContactNameLabel')" min-width="140" />
-      <el-table-column prop="contactPhone" :label="t('ContactPhoneLabel')" min-width="140" />
-      <el-table-column prop="contactEmail" :label="t('ContactEmailLabel')" min-width="180" />
-      <el-table-column prop="expireTime" :label="t('ExpireTimeLabel')" width="180" />
       <el-table-column prop="createTime" :label="t('CreatedAtLabel')" width="180" />
       <el-table-column prop="updateTime" :label="t('UpdatedAtLabel')" width="180" />
       <el-table-column :label="t('OperationsLabel')" min-width="180" fixed="right">
@@ -48,10 +49,10 @@
         :total="total" layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange"
         @current-change="handleCurrentChange" />
     </div>
-    <TenantDetailDialog v-if="detailRow && detailRow.id" :visible="detailDialogVisible" :row="detailRow"
+    <ResourceDetailDialog v-if="detailRow && detailRow.id" :visible="detailDialogVisible" :row="detailRow"
       :onConfirm="handleDetailConfirm" />
-    <TenantCreateDialog :visible="createDialogVisible" :onSubmit="handleCreateSubmit" :onCancel="handleCreateCancel" />
-    <TenantEditDialog v-if="editRow && editRow.id" :visible="editDialogVisible" :row="editRow"
+    <ResourceCreateDialog :visible="createDialogVisible" :onSubmit="handleCreateSubmit" :onCancel="handleCreateCancel" />
+    <ResourceEditDialog v-if="editRow && editRow.id" :visible="editDialogVisible" :row="editRow"
       :onSubmit="handleEditSubmit" :onCancel="handleEditCancel" />
   </el-card>
 </template>
@@ -59,13 +60,13 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { getTenantPage, deleteTenantById } from '@/views/tenants/TenantApi'
+import { getResourcePage, deleteResourceById } from '@/views/resources/ResourceApi'
 import { Refresh, Plus } from '@element-plus/icons-vue'
-import { ElMessageBox, ElMessage } from 'element-plus'
-import TenantSearchForm from '@/views/tenants/TenantSearchForm.vue'
-import TenantDetailDialog from '@/views/tenants/TenantDetailDialog.vue'
-import TenantCreateDialog from '@/views/tenants/TenantCreateDialog.vue'
-import TenantEditDialog from '@/views/tenants/TenantEditDialog.vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import ResourceSearchForm from '@/views/resources/ResourceSearchForm.vue'
+import ResourceDetailDialog from '@/views/resources/ResourceDetailDialog.vue'
+import ResourceCreateDialog from '@/views/resources/ResourceCreateDialog.vue'
+import ResourceEditDialog from '@/views/resources/ResourceEditDialog.vue'
 
 const { t } = useI18n()
 
@@ -81,6 +82,14 @@ const detailRow = ref({})
 const editRow = ref({})
 const searchParams = ref({})
 
+const formatFileSize = (bytes) => {
+  if (!bytes || bytes === 0) return '0 B'
+  const k = 1024
+  const sizes = ['B', 'KB', 'MB', 'GB', 'TB']
+  const i = Math.floor(Math.log(bytes) / Math.log(k))
+  return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i]
+}
+
 // init data
 const initData = () => {
   tableData.value = []
@@ -88,14 +97,14 @@ const initData = () => {
   pageSize.value = 10
   total.value = 0
   searchParams.value = {}
-  getTenantPage(currentPage.value, pageSize.value, searchParams.value).then(response => {
+  getResourcePage(currentPage.value, pageSize.value, searchParams.value).then(response => {
     tableData.value = response.records || []
     currentPage.value = response.page || currentPage.value
     pageSize.value = response.size || pageSize.value
     total.value = response.total || 0
   }).catch(error => {
-    console.error('Failed to get tenant page:', error)
-    ElMessage.error(error.message || 'Failed to get tenant page')
+    console.error('Failed to get resource page:', error)
+    ElMessage.error(error.message || 'Failed to get resource page')
   })
 }
 
@@ -107,14 +116,14 @@ const handleReset = (params) => {
 
 // refresh data
 const handleRefresh = () => {
-  getTenantPage(currentPage.value, pageSize.value, searchParams.value).then(response => {
+  getResourcePage(currentPage.value, pageSize.value, searchParams.value).then(response => {
     tableData.value = response.records || []
     currentPage.value = response.page || currentPage.value
     pageSize.value = response.size || pageSize.value
     total.value = response.total || 0
   }).catch(error => {
-    console.error('Failed to refresh tenant page:', error)
-    ElMessage.error(error.message || 'Failed to refresh tenant page')
+    console.error('Failed to refresh resource page:', error)
+    ElMessage.error(error.message || 'Failed to refresh resource page')
   })
 }
 
@@ -122,14 +131,14 @@ const handleRefresh = () => {
 const handleSearch = (params) => {
   searchParams.value = params
   currentPage.value = 1 // Reset to first page on new search
-  getTenantPage(currentPage.value, pageSize.value, searchParams.value).then(response => {
+  getResourcePage(currentPage.value, pageSize.value, searchParams.value).then(response => {
     tableData.value = response.records || []
     currentPage.value = response.page || currentPage.value
     pageSize.value = response.size || pageSize.value
     total.value = response.total || 0
   }).catch(error => {
-    console.error('Failed to search tenant page:', error)
-    ElMessage.error(error.message || 'Failed to search tenant page')
+    console.error('Failed to search resource page:', error)
+    ElMessage.error(error.message || 'Failed to search resource page')
   })
 }
 
@@ -181,7 +190,7 @@ const handleDelete = (id) => {
     cancelButtonText: t('CancelButtonText'),
     type: 'warning',
   }).then(() => {
-    deleteTenantById(id).then(() => {
+    deleteResourceById(id).then(() => {
       initData()
       ElMessage.success('Delete successful!')
     }).catch(error => {
@@ -196,7 +205,7 @@ const handleDelete = (id) => {
 // change page size
 const handleSizeChange = (size) => {
   pageSize.value = size
-  getTenantPage(currentPage.value, pageSize.value, searchParams.value).then(response => {
+  getResourcePage(currentPage.value, pageSize.value, searchParams.value).then(response => {
     tableData.value = response.records || []
     currentPage.value = response.page || currentPage.value
     pageSize.value = response.size || pageSize.value
@@ -210,7 +219,7 @@ const handleSizeChange = (size) => {
 // change current page
 const handleCurrentChange = (page) => {
   currentPage.value = page
-  getTenantPage(currentPage.value, pageSize.value, searchParams.value).then(response => {
+  getResourcePage(currentPage.value, pageSize.value, searchParams.value).then(response => {
     tableData.value = response.records || []
     currentPage.value = response.page || currentPage.value
     pageSize.value = response.size || pageSize.value
@@ -240,5 +249,3 @@ onMounted(() => {
   justify-content: flex-start;
 }
 </style>
-
-

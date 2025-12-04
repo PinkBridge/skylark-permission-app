@@ -133,6 +133,22 @@ const enMessages = {
   UploadImageSizeLimit: 'Image size cannot exceed 2MB!',
   UploadImageError: 'Failed to read image file, please try again',
   SelectFileButtonLabel: 'Select File',
+  OriginalNameLabel: 'Original Name',
+  FileTypeLabel: 'File Type',
+  FileTypeImage: 'Image',
+  FileTypeDocument: 'Document',
+  FileTypeVideo: 'Video',
+  FileTypeAudio: 'Audio',
+  FileTypeOther: 'Other',
+  FilePathLabel: 'File Path',
+  FileSizeLabel: 'File Size',
+  MimeTypeLabel: 'MIME Type',
+  UrlLabel: 'URL',
+  TenantIdLabel: 'Tenant ID',
+  OriginalNameRequired: 'Please enter original name',
+  FileTypeRequired: 'Please select file type',
+  FilePathRequired: 'Please enter file path',
+  TenantNotAvailable: 'The tenant is not available, please contact the administrator',
 }
 
 export default enMessages

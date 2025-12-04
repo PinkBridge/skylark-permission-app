@@ -134,6 +134,22 @@ const zhMessages = {
   UploadImageSizeLimit: '图片大小不能超过 2MB！',
   UploadImageError: '图片读取失败，请重试',
   SelectFileButtonLabel: '选择文件',
+  OriginalNameLabel: '原始文件名',
+  FileTypeLabel: '文件类型',
+  FileTypeImage: '图片',
+  FileTypeDocument: '文档',
+  FileTypeVideo: '视频',
+  FileTypeAudio: '音频',
+  FileTypeOther: '其他',
+  FilePathLabel: '文件路径',
+  FileSizeLabel: '文件大小',
+  MimeTypeLabel: 'MIME类型',
+  UrlLabel: '访问URL',
+  TenantIdLabel: '租户ID',
+  OriginalNameRequired: '请输入原始文件名',
+  FileTypeRequired: '请选择文件类型',
+  FilePathRequired: '请输入文件路径',
+  TenantNotAvailable: '租户不可用，请联系管理员',
 }
 
 export default zhMessages

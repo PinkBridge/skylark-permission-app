@@ -3,13 +3,16 @@
     <div class="index-content">
       <div class="logo-section">
         <div class="logo-placeholder">
-          <img v-if="tenant && tenant.logo" :src="tenant.logo ? tenant.logo : '@/assets/logo.png'" alt="Logo"
+          <img v-if="tenant && tenant.logo" :src="tenant.logo" alt="Logo"
             style="width: 120px; height: 120px; border-radius: 50%;" />
         </div>
-        <h1 class="app-title">{{ tenant && tenant.systemName ? tenant.systemName : 'Skylark' }}</h1>
+        <h1 class="app-title">{{tenant.systemName }}</h1>
+        <el-tag v-if="
+          !isTenantAvailable" type="error">
+          {{ t('TenantNotAvailable') }}</el-tag>
       </div>
 
-      <div class="action-section">
+      <div class="action-section" v-if="isTenantAvailable">
         <el-button type="primary" size="large" class="action-button" @click="handleLogin">
           Login
         </el-button>
@@ -18,13 +21,13 @@
         </el-button>
       </div>
       <div class="footer-section">
-        <p>© 2025 {{ tenant && tenant.name ? tenant.name : 'Skylark' }}. All rights reserved.</p>
-        <p>Powered by {{ tenant && tenant.name ? tenant.name : 'Skylark' }}</p>
-        <p>Address: {{ tenant && tenant.address ? tenant.address : '123 Main St, Anytown, USA' }}</p>
-        <p>Email: <a href="mailto:{{ tenant && tenant.contactEmail ? tenant.contactEmail : 'support@skylark.com' }}" target="_blank">{{ tenant && tenant.contactEmail ? tenant.contactEmail : 'support@skylark.com' }}</a></p>
-        <p>Phone: <a href="tel:{{ tenant && tenant.contactPhone ? tenant.contactPhone : '+1234567890' }}" target="_blank">{{ tenant && tenant.contactPhone ? tenant.contactPhone : '+1234567890' }}</a></p>
+        <p>© 2025 {{ tenant.companyName }}. All rights reserved.</p>
+        <p>Powered by {{ tenant.companyName }}</p>
+        <p>Address: {{ tenant.address }}</p>
+        <p>Email: <a href="mailto:{{ tenant.contactEmail }}" target="_blank">{{ tenant.contactEmail }}</a></p>
+        <p>Phone: <a href="tel:{{ tenant.contactPhone }}" target="_blank">{{ tenant.contactPhone }}</a></p>
       </div>
-    </div>  
+    </div>
   </div>
 </template>
 
@@ -32,24 +35,50 @@
 import { ElMessage } from 'element-plus'
 import { Avatar } from '@element-plus/icons-vue'
 import { getAuthorizationUrl } from '@/api/oauth'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { getTenantByDomain } from '@/utils/tenant'
+import { useI18n } from 'vue-i18n'
 
 export default {
   name: 'WelcomePage',
   setup() {
+    const { t } = useI18n()
+    const tenant = ref({
+      logo: '@/assets/logo.png',
+      systemName: 'Skylark',
+      name: 'Skylark',
+      code: '',
+      status: '',
+      expireTime: '',
+      domain: 'skylark.com',
+      address: '123 Main St, Anytown, USA',
+      contactEmail: 'support@skylark.com',
+      contactPhone: '+1234567890'
+    })
+
     const handleLogin = () => {
-      // redirect to OAuth2 authorization server
       const authUrl = getAuthorizationUrl()
       window.location.href = authUrl
     }
 
     const handleRegister = () => {
-      // registration function, can be implemented according to needs
       ElMessage.info('Registration function under development...')
     }
 
-    const tenant = ref(null)
+
+    const isTenantAvailable = computed(() => {
+      return (
+        tenant.value &&
+        tenant.value.status === 'ACTIVE' &&
+        (
+          (typeof tenant.value.expireTime === 'string'
+            ? new Date(tenant.value.expireTime).getTime()
+            : tenant.value.expireTime)
+          > new Date().getTime()
+        )
+      )
+    })
+
 
     onMounted(() => {
       getTenantByDomain(window.location.hostname).then(tenantData => {
@@ -63,7 +92,9 @@ export default {
       handleLogin,
       handleRegister,
       Avatar,
-      tenant
+      tenant,
+      t,
+      isTenantAvailable
     }
   }
 }
