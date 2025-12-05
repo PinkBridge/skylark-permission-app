@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="display: block;width: 100%;">
     <el-upload 
       ref="uploadRef"
       v-model:file-list="fileList" 
@@ -16,7 +16,6 @@
         <Plus />
       </el-icon>
     </el-upload>
-
     <el-dialog v-model="dialogVisible">
       <img w-full :src="dialogImageUrl" alt="Preview Image" />
     </el-dialog>

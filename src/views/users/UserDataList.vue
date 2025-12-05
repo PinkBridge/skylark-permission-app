@@ -8,16 +8,21 @@
     </div>
     <el-table :data="tableData" style="width: 100%" stripe border show-overflow-tooltip>
       <el-table-column fixed prop="id" :label="t('IDLabel')" width="80"/>
-      <el-table-column prop="username" :label="t('UsernameLabel')" />
-      <el-table-column prop="avatar" :label="t('AvatarLabel')" width="120">
+            <el-table-column prop="avatar" :label="t('AvatarLabel')" width="80">
         <template #default="{ row }">
           <el-image v-if="row.avatar" style="width: 40px; height: 40px" :src="row.avatar" fit="contain" />
           <span v-else>-</span>
         </template>
       </el-table-column>
+      <el-table-column prop="username" :label="t('UsernameLabel')" />
+      <el-table-column prop="status" :label="t('StatusLabel')" />
+      <el-table-column prop="organization" :label="t('OrganizationLabel')" ><template #default="{ row }">
+          {{ row.organization ? (row.organization.name || row.organization) : '-' }}
+        </template>
+      </el-table-column>
       <el-table-column prop="email" :label="t('EmailLabel')" />
       <el-table-column prop="phone" :label="t('PhoneLabel')" />
-      <el-table-column prop="status" :label="t('StatusLabel')" />
+      
       <el-table-column prop="createTime" :label="t('CreatedAtLabel')" />
       <el-table-column prop="updateTime" :label="t('UpdatedAtLabel')" />
       <el-table-column :label="t('OperationsLabel')" min-width="120">

@@ -6,6 +6,7 @@
         <el-image style="width: 100px; height: 100px" :src="userInfo.avatar" />
       </el-descriptions-item>
       <el-descriptions-item :label="t('UsernameLabel')">{{ userInfo.username }}</el-descriptions-item>
+      <el-descriptions-item :label="t('OrganizationLabel')">{{ userInfo.organization ? (userInfo.organization.name || userInfo.organization) : '-' }}</el-descriptions-item>
       <el-descriptions-item :label="t('TelephoneLabel')">{{ userInfo.phone }}</el-descriptions-item>
       <el-descriptions-item :label="t('EmailLabel')">{{ userInfo.email }}</el-descriptions-item>
       <el-descriptions-item :label="t('GenderLabel')">{{ userInfo.gender == 'F' ? t('Boy') :

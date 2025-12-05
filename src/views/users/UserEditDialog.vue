@@ -5,6 +5,13 @@
       <el-form-item :label="t('UsernameLabel')" prop="username">
         <el-input v-model="form.username" :disabled="true" />
       </el-form-item>
+      <el-form-item :label="t('OrganizationLabel')" prop="orgId">
+        <OrgSelect v-model="form.orgId" :model-value="form.orgId" :placeholder="t('OrganizationLabel')" />
+      </el-form-item>
+      <el-form-item :label="t('AvatarLabel')" prop="avatar">
+        <ResourceUpload :fileList="form.avatar" :on-success="handleUploadSuccess"/>
+        <div class="upload-tip">{{ t('UploadTip') }}</div>
+      </el-form-item>
       <el-form-item :label="t('EmailLabel')" prop="email">
         <el-input v-model="form.email" placeholder="example@email.com" />
       </el-form-item>
@@ -36,6 +43,8 @@ import { ref, watch, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { getUserById, updateUserById } from '@/views/users/UserApi'
 import { ElMessage } from 'element-plus'
+import OrgSelect from '@/views/orgs/OrgSelect.vue'
+import ResourceUpload from '@/components/ResourceUpload.vue'
 
 const { t } = useI18n()
 
@@ -102,6 +111,11 @@ const fetchUserData = () => {
   }
 }
 
+const handleUploadSuccess = (file) => {
+  form.value.avatar = file
+  console.log('handleUploadSuccess', file)
+}
+
 const onSubmit = async () => {
   if (!formRef.value) return
   
@@ -111,6 +125,8 @@ const onSubmit = async () => {
     
     // If validation passes, update user
     const user = {
+      orgId: form.value.orgId,
+      avatar: form.value.avatar,
       username: form.value.username,
       email: form.value.email,
       phone: form.value.phone,

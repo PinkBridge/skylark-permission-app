@@ -5,6 +5,9 @@
       <el-form-item :label="t('UsernameLabel')" prop="username">
         <el-input v-model="form.username" />
       </el-form-item>
+      <el-form-item :label="t('OrganizationLabel')" prop="orgId">
+        <OrgSelect v-model="form.orgId" :model-value="form.orgId" :placeholder="t('OrganizationLabel')" />
+      </el-form-item>
       <el-form-item :label="t('PasswordLabel')" prop="password">
         <el-input v-model="form.password" type="password" show-password />
       </el-form-item>
@@ -24,6 +27,10 @@
           <el-option v-for="item in statusOptions" :key="item.value" :label="item.label" :value="item.value" />
         </el-select>
       </el-form-item>
+      <el-form-item :label="t('AvatarLabel')" prop="avatar">
+        <ResourceUpload :fileList="form.avatar" :on-success="handleUploadSuccess" />
+        <div class="upload-tip">{{ t('UploadTip') }}</div>
+      </el-form-item>
     </el-form>
     <template #footer>
       <div class="dialog-footer">
@@ -38,6 +45,8 @@
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { createUser } from '@/views/users/UserApi'
+import ResourceUpload from '@/components/ResourceUpload.vue'
+import OrgSelect from '@/views/orgs/OrgSelect.vue'
 
 const { t } = useI18n()
 // props
@@ -50,7 +59,9 @@ const form = ref({
   email: '',
   phone: '',
   role: '',
-  status: ''
+  status: '',
+  orgId: '',
+  avatar: ''
 })
 
 const rolesOptions = ref([
@@ -62,6 +73,11 @@ const statusOptions = ref([
   { label: t('Inactive'), value: 'INACTIVE' },
   { label: t('Locked'), value: 'LOCKED' }
 ])
+
+const handleUploadSuccess = (file) => {
+  form.value.avatar = file
+  console.log('handleUploadSuccess', file)
+}
 
 // Email validation regex
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -133,6 +149,8 @@ const onSubmit = async () => {
     await formRef.value.validate()
     // If validation passes, call parent's onSubmit
     const user = {
+      orgId: form.value.orgId,
+      avatar: form.value.avatar,
       username: form.value.username,
       password: form.value.password,
       email: form.value.email,

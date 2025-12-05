@@ -128,7 +128,7 @@ const enMessages = {
   SystemNameLabel: 'System Name',
   AvatarLabel: 'Avatar',
   NewTenantAdminButtonLabel: 'New Tenant Admin',
-  UploadTip: 'Only image files can be uploaded, and the size should not exceed 2MB',
+  UploadTip: 'Only one image file can be uploaded!',
   UploadImageOnly: 'Only image files can be uploaded!',
   UploadImageSizeLimit: 'Image size cannot exceed 2MB!',
   UploadImageError: 'Failed to read image file, please try again',
@@ -149,6 +149,7 @@ const enMessages = {
   FileTypeRequired: 'Please select file type',
   FilePathRequired: 'Please enter file path',
   TenantNotAvailable: 'The tenant is not available, please contact the administrator',
+  OrganizationLabel: 'Organization',
 }
 
 export default enMessages

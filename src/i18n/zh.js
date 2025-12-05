@@ -129,7 +129,7 @@ const zhMessages = {
   SystemNameLabel: '系统名称',
   AvatarLabel: '头像',
   NewTenantAdminButtonLabel: '新增租户管理员',
-  UploadTip: '只能上传图片文件，且不超过 2MB',
+  UploadTip: '只能上传一张图片文件！',
   UploadImageOnly: '只能上传图片文件！',
   UploadImageSizeLimit: '图片大小不能超过 2MB！',
   UploadImageError: '图片读取失败，请重试',
@@ -150,6 +150,7 @@ const zhMessages = {
   FileTypeRequired: '请选择文件类型',
   FilePathRequired: '请输入文件路径',
   TenantNotAvailable: '租户不可用，请联系管理员',
+  OrganizationLabel: '组织',
 }
 
 export default zhMessages
