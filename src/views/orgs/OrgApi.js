@@ -11,6 +11,13 @@ export function getOrgPage(currentPage, pageSize, params) {
 }
 
 /**
+ * Get org list (tree structure)
+ */
+export function getOrgList(params) {
+  return http.get(`${ORG_PREFIX}/tree`, { ...params })
+}
+
+/**
  * Get org by id
  */
 export function getOrgById(id) {

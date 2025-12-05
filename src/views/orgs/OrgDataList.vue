@@ -6,7 +6,8 @@
       <el-button type="default" size="default" :icon="Refresh" @click="handleRefresh">{{
         t('RefreshButtonLabel') }}</el-button>
     </div>
-    <el-table :data="tableData" style="width: 100%" stripe border show-overflow-tooltip>
+    <el-table :data="tableData" style="width: 100%" stripe border show-overflow-tooltip row-key="id"
+      :tree-props="{ children: 'children', hasChildren: 'hasChildren' }" default-expand-all>
       <el-table-column fixed prop="id" :label="t('IDLabel')" width="80" />
       <el-table-column prop="name" :label="t('NameLabel')" min-width="150" />
       <el-table-column prop="code" :label="t('CodeLabel')" min-width="120" />
@@ -41,11 +42,6 @@
         </template>
       </el-table-column>
     </el-table>
-    <div class="pagination-block">
-      <el-pagination v-model:current-page="currentPage" v-model:page-size="pageSize" :page-sizes="[10, 20, 30, 40]"
-        :total="total" layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange"
-        @current-change="handleCurrentChange" />
-    </div>
     <OrgDetailDialog v-if="detailRow && detailRow.id" :visible="detailDialogVisible" :row="detailRow"
       :onConfirm="handleDetailConfirm" />
     <OrgCreateDialog :visible="createDialogVisible" :onSubmit="handleCreateSubmit" :onCancel="handleCreateCancel" />
@@ -57,7 +53,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { getOrgPage, deleteOrgById } from '@/views/orgs/OrgApi'
+import { getOrgList, deleteOrgById } from '@/views/orgs/OrgApi'
 import { Refresh, Plus } from '@element-plus/icons-vue'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import OrgSearchForm from '@/views/orgs/OrgSearchForm.vue'
@@ -68,9 +64,6 @@ import OrgEditDialog from '@/views/orgs/OrgEditDialog.vue'
 const { t } = useI18n()
 
 // data
-const currentPage = ref(1)
-const pageSize = ref(10)
-const total = ref(0)
 const tableData = ref([])
 const detailDialogVisible = ref(false)
 const createDialogVisible = ref(false)
@@ -90,18 +83,13 @@ const formatType = (type) => {
 // init data
 const initData = () => {
   tableData.value = []
-  currentPage.value = 1
-  pageSize.value = 10
-  total.value = 0
   searchParams.value = {}
-  getOrgPage(currentPage.value, pageSize.value, searchParams.value).then(response => {
-    tableData.value = response.records || []
-    currentPage.value = response.page || currentPage.value
-    pageSize.value = response.size || pageSize.value
-    total.value = response.total || 0
+  getOrgList(searchParams.value).then(response => {
+    // If response is an array, use it directly; if it's an object with data property, use that
+    tableData.value = Array.isArray(response) ? response : (response.data || response.list || [])
   }).catch(error => {
-    console.error('Failed to get org page:', error)
-    ElMessage.error(error.message || 'Failed to get org page')
+    console.error('Failed to get org list:', error)
+    ElMessage.error(error.message || 'Failed to get org list')
   })
 }
 
@@ -113,29 +101,22 @@ const handleReset = (params) => {
 
 // refresh data
 const handleRefresh = () => {
-  getOrgPage(currentPage.value, pageSize.value, searchParams.value).then(response => {
-    tableData.value = response.records || []
-    currentPage.value = response.page || currentPage.value
-    pageSize.value = response.size || pageSize.value
-    total.value = response.total || 0
+  getOrgList(searchParams.value).then(response => {
+    tableData.value = Array.isArray(response) ? response : (response.data || response.list || [])
   }).catch(error => {
-    console.error('Failed to refresh org page:', error)
-    ElMessage.error(error.message || 'Failed to refresh org page')
+    console.error('Failed to refresh org list:', error)
+    ElMessage.error(error.message || 'Failed to refresh org list')
   })
 }
 
 // filter data
 const handleSearch = (params) => {
   searchParams.value = params
-  currentPage.value = 1 // Reset to first page on new search
-  getOrgPage(currentPage.value, pageSize.value, searchParams.value).then(response => {
-    tableData.value = response.records || []
-    currentPage.value = response.page || currentPage.value
-    pageSize.value = response.size || pageSize.value
-    total.value = response.total || 0
+  getOrgList(searchParams.value).then(response => {
+    tableData.value = Array.isArray(response) ? response : (response.data || response.list || [])
   }).catch(error => {
-    console.error('Failed to search org page:', error)
-    ElMessage.error(error.message || 'Failed to search org page')
+    console.error('Failed to search org list:', error)
+    ElMessage.error(error.message || 'Failed to search org list')
   })
 }
 
@@ -199,34 +180,6 @@ const handleDelete = (id) => {
   })
 }
 
-// change page size
-const handleSizeChange = (size) => {
-  pageSize.value = size
-  getOrgPage(currentPage.value, pageSize.value, searchParams.value).then(response => {
-    tableData.value = response.records || []
-    currentPage.value = response.page || currentPage.value
-    pageSize.value = response.size || pageSize.value
-    total.value = response.total || 0
-  }).catch(error => {
-    console.error('Failed to change page size:', error)
-    ElMessage.error(error.message || 'Failed to change page size')
-  })
-}
-
-// change current page
-const handleCurrentChange = (page) => {
-  currentPage.value = page
-  getOrgPage(currentPage.value, pageSize.value, searchParams.value).then(response => {
-    tableData.value = response.records || []
-    currentPage.value = response.page || currentPage.value
-    pageSize.value = response.size || pageSize.value
-    total.value = response.total || 0
-  }).catch(error => {
-    console.error('Failed to change current page:', error)
-    ElMessage.error(error.message || 'Failed to change current page')
-  })
-}
-
 // mounted
 onMounted(() => {
   initData()
@@ -234,12 +187,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.pagination-block {
-  margin-top: 20px;
-  display: flex;
-  justify-content: flex-end;
-}
-
 .buttons-block {
   margin-bottom: 16px;
   display: flex;

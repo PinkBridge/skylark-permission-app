@@ -11,8 +11,9 @@
       <el-form-item :label="t('CodeLabel')" prop="code">
         <el-input v-model="form.code" :placeholder="t('CodeLabel')" />
       </el-form-item>
-      <el-form-item :label="t('ParentOrganizationLabel')" prop="parentOrganization">
-        <el-input v-model="form.parentOrganization" :placeholder="t('ParentOrganizationLabel')" />
+      <el-form-item :label="t('ParentOrganizationLabel')" prop="parentId">
+        <OrgSelect v-model="form.parentId" 
+        :model-value="form.parentId" :disabled-ids="[form.id]" :placeholder="t('ParentOrganizationLabel')" />
       </el-form-item>
       <el-form-item :label="t('TypeLabel')" prop="type">
         <el-select v-model="form.type" :placeholder="t('TypeLabel')">
@@ -42,6 +43,7 @@ import { ref, watch, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { getOrgById, updateOrgById } from '@/views/orgs/OrgApi'
 import { ElMessage } from 'element-plus'
+import OrgSelect from '@/views/orgs/OrgSelect.vue'
 
 const { t } = useI18n()
 
@@ -73,7 +75,6 @@ const fetchOrgData = () => {
       const data = response.org || response || {}
       form.value = {
         ...data,
-        parentOrganization: data.parentOrganization ? (data.parentOrganization.name || data.parentOrganization) : '',
       }
     }).catch(error => {
       console.error('Failed to get org information:', error)
@@ -90,7 +91,7 @@ const onSubmit = async () => {
     const org = {
       name: form.value.name,
       code: form.value.code,
-      parentOrganization: form.value.parentOrganization || '',
+      parentId: form.value.parentId || '',
       type: form.value.type,
       status: form.value.status,
     }

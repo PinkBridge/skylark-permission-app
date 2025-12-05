@@ -8,8 +8,8 @@
       <el-form-item :label="t('CodeLabel')" prop="code">
         <el-input v-model="form.code" :placeholder="t('CodeLabel')" />
       </el-form-item>
-      <el-form-item :label="t('ParentOrganizationLabel')" prop="parentOrganization">
-        <el-input v-model="form.parentOrganization" :placeholder="t('ParentOrganizationLabel')" />
+      <el-form-item :label="t('ParentOrganizationLabel')" prop="parentId">
+        <OrgSelect v-model="form.parentId" :placeholder="t('ParentOrganizationLabel')" />
       </el-form-item>
       <el-form-item :label="t('TypeLabel')" prop="type">
         <el-select v-model="form.type" :placeholder="t('TypeLabel')">
@@ -39,6 +39,7 @@ import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { createOrg } from '@/views/orgs/OrgApi'
 import { ElMessage } from 'element-plus'
+import OrgSelect from '@/views/orgs/OrgSelect.vue'
 
 const { t } = useI18n()
 
@@ -48,7 +49,7 @@ const formRef = ref(null)
 const form = ref({
   name: '',
   code: '',
-  parentOrganization: '',
+  parentId: '',
   type: '',
   status: 'ACTIVE',
 })
@@ -77,7 +78,7 @@ const onCancel = () => {
   form.value = {
     name: '',
     code: '',
-    parentOrganization: '',
+    parentId: '',
     type: '',
     status: 'ACTIVE',
   }
@@ -92,7 +93,7 @@ const onSubmit = async () => {
     const org = {
       name: form.value.name,
       code: form.value.code,
-      parentOrganization: form.value.parentOrganization || '',
+      parentId: form.value.parentId || '',
       type: form.value.type,
       status: form.value.status,
     }
