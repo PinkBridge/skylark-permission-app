@@ -35,7 +35,7 @@ const routes = [
         }
       },
       {
-        path: '/system/users',
+        path: '/perm/users',
         name: 'UserDataList',
         component: () => import('@/views/users/UserDataList.vue'),
         meta: {
@@ -44,7 +44,7 @@ const routes = [
         }
       },
       {
-        path: '/system/roles',
+        path: '/perm/roles',
         name: 'RoleDataList',
         component: () => import('@/views/roles/RoleDataList.vue'),
         meta: {
@@ -89,7 +89,7 @@ const routes = [
         }
       },
       {
-        path: '/system/orgs',
+        path: '/perm/orgs',
         name: 'OrgDataList',
         component: () => import('@/views/orgs/OrgDataList.vue'),
         meta: {
@@ -98,7 +98,7 @@ const routes = [
         }
       },
       {
-        path: '/system/tenants',
+        path: '/perm/tenants',
         name: 'TenantDataList',
         component: () => import('@/views/tenants/TenantDataList.vue'),
         meta: {
@@ -107,7 +107,7 @@ const routes = [
         }
       },
       {
-        path: '/system/resources',
+        path: '/perm/resources',
         name: 'ResourceDataList',
         component: () => import('@/views/resources/ResourceDataList.vue'),
         meta: {

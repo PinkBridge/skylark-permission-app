@@ -3,6 +3,15 @@
     <el-form-item :label="t('NameLabel')">
       <el-input v-model="formInline.name" :placeholder="t('NameLabel')" clearable />
     </el-form-item>
+    <el-form-item :label="t('PermLabel')" prop="perm">
+      <el-input v-model="formInline.permlabel" :placeholder="t('PermLabel')" />
+    </el-form-item>
+    <el-form-item :label="t('ModuleKeyLabel')" prop="moduleKey">
+      <el-input v-model="formInline.moduleKey" :placeholder="t('ModuleKeyLabel')" />
+    </el-form-item>
+    <el-form-item :label="t('PathLabel')">
+      <el-input v-model="formInline.path" :placeholder="t('PathLabel')" clearable />
+    </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="onSubmit" :icon="Search">{{ t('QueryLabel') }}</el-button>
       <el-button type="default" @click="onReset" :icon="RefreshRight">{{ t('ResetLabel') }}</el-button>
@@ -20,6 +29,10 @@ const { t } = useI18n()
 
 const formInline = reactive({
   name: '',
+  permlabel: '',
+  moduleKey: '',
+  path: '',
+  status: '',
 })
 
 const onSubmit = () => {
@@ -37,4 +50,3 @@ const onReset = () => {
   --el-input-width: 220px;
 }
 </style>
-

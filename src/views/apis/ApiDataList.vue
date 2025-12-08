@@ -7,14 +7,27 @@
         t('RefreshButtonLabel') }}</el-button>
     </div>
     <el-table :data="tableData" style="width: 100%" stripe border show-overflow-tooltip>
-      <el-table-column fixed prop="id" :label="t('IDLabel')" />
-      <el-table-column prop="method" :label="t('MethodLabel')" />
-      <el-table-column prop="path" :label="t('PathLabel')" />
-      <el-table-column prop="permlabel" :label="t('PermLabelLabel')" />
-      <el-table-column prop="moduleKey" :label="t('ModuleKeyLabel')" />
-      <el-table-column prop="createTime" :label="t('CreatedAtLabel')" />
-      <el-table-column prop="updateTime" :label="t('UpdatedAtLabel')" />
-      <el-table-column :label="t('OperationsLabel')" min-width="120">
+      <el-table-column fixed prop="id" :label="t('IDLabel')" width="80"/>
+      <el-table-column prop="method" :label="t('MethodLabel')" width="120">
+        <template #default="{ row }">
+          <el-tag
+            :type="row.method === 'GET' ? 'success'
+                   : row.method === 'POST' ? 'primary'
+                   : row.method === 'PUT' ? 'warning'
+                   : row.method === 'DELETE' ? 'danger'
+                   : 'info'"
+            effect="plain"
+          >
+            {{ row.method }}
+          </el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column prop="path" :label="t('PathLabel')"  width="300"/>
+      <el-table-column prop="permlabel" :label="t('PermLabelLabel')"  />
+      <el-table-column prop="moduleKey" :label="t('ModuleKeyLabel')"  />
+      <el-table-column prop="createTime" :label="t('CreatedAtLabel')"  />
+      <el-table-column prop="updateTime" :label="t('UpdatedAtLabel')"  />
+      <el-table-column :label="t('OperationsLabel')">
         <template #default="{ row }">
           <el-button link type="primary" size="default" @click="handleDetail(row)">
             {{ t('DetailLabel') }}

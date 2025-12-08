@@ -150,6 +150,16 @@ const enMessages = {
   FilePathRequired: 'Please enter file path',
   TenantNotAvailable: 'The tenant is not available, please contact the administrator',
   OrganizationLabel: 'Organization',
+  APIsLabel: 'APIs',
+  MenusLabel: 'Menus',
+  IconLabel: 'Icon',
+  IconTip: 'Please copy the icon name from the address and paste it into the input box above.',
+  MenuLabel: 'Menu',
+  ButtonLabel: 'Button',
+  PermLabel: 'Permission Label',
+  PermRequired: 'Please enter permission label',
+  SortLabel: 'Sort',
+  SortRequired: 'Please enter sort',
 }
 
 export default enMessages

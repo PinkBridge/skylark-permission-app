@@ -151,6 +151,16 @@ const zhMessages = {
   FilePathRequired: '请输入文件路径',
   TenantNotAvailable: '租户不可用，请联系管理员',
   OrganizationLabel: '组织',
+  APIsLabel: 'API',
+  MenusLabel: '菜单',
+  IconLabel: '图标',
+  IconTip: '请复制该地址的 icon 名称，粘贴到上面的输入框中。',
+  MenuLabel: '菜单',
+  ButtonLabel: '按钮',
+  PermLabel: '权限标签',
+  PermRequired: '请输入权限标签',
+  SortLabel: '排序',
+  SortRequired: '请输入排序',
 }
 
 export default zhMessages

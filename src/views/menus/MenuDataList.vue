@@ -7,16 +7,27 @@
         t('RefreshButtonLabel') }}</el-button>
     </div>
     <el-table :data="tableData" style="width: 100%" stripe border show-overflow-tooltip row-key="id"
-      :tree-props="{ children: 'children', hasChildren: 'hasChildren' }" default-expand-all>
+      :tree-props="{ children: 'children', hasChildren: 'hasChildren' }" ref="menuTableRef">
       <el-table-column fixed prop="id" :label="t('IDLabel')" width="80" />
-      <el-table-column prop="name" :label="t('NameLabel')" min-width="150" />
-        
-      <el-table-column prop="parentMenu.name" :label="t('ParentNameLabel')" min-width="120" >
+      <el-table-column prop="name" :label="t('NameLabel')" width="150" />
+      <el-table-column prop="sort" :label="t('SortLabel')" width="100" />
+      <el-table-column prop="icon" :label="t('IconLabel')" width="80" >
         <template #default="{ row }">
-            {{ row.parentMenu ? row.parentMenu.name : '-' }}
+          <el-icon :size="20" :color="row.icon">
+            <component :is="row.icon" />
+          </el-icon>
+        </template>
+      </el-table-column>
+      <el-table-column prop="type" :label="t('TypeLabel')" width="100">
+        <template #default="{ row }">
+          <el-tag :type="row.type == 'menu' ? 'success' : 'danger'">
+            {{ row.type == 'menu' ? t('MenuLabel') : t('ButtonLabel') }}
+          </el-tag>
         </template>
       </el-table-column>
       <el-table-column prop="path" :label="t('PathLabel')" min-width="150" />
+      <el-table-column prop="permlabel" :label="t('PermLabel')" min-width="150" />
+      <el-table-column prop="moduleKey" :label="t('ModuleKeyLabel')" min-width="120" />
       <el-table-column prop="hidden" :label="t('HiddenLabel')" width="100">
         <template #default="{ row }">
           <el-tag :type="row.hidden == true ? 'danger' : 'success'">
@@ -24,7 +35,6 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="moduleKey" :label="t('ModuleKeyLabel')" min-width="120" />
       <el-table-column prop="createTime" :label="t('CreatedAtLabel')" width="180" />
       <el-table-column prop="updateTime" :label="t('UpdatedAtLabel')" width="180" />
       <el-table-column :label="t('OperationsLabel')" min-width="150" fixed="right">
@@ -46,7 +56,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { getMenuList, deleteMenuById } from '@/views/menus/MenuApi'
 import { Refresh, Plus } from '@element-plus/icons-vue'
@@ -60,12 +70,25 @@ const { t } = useI18n()
 
 // data
 const tableData = ref([])
+const menuTableRef = ref(null)
 const detailDialogVisible = ref(false)
 const createDialogVisible = ref(false)
 const editDialogVisible = ref(false)
 const detailRow = ref({})
 const editRow = ref({})
 const searchParams = ref({})
+
+// Expand first level only
+const expandFirstLevel = () => {
+  const table = menuTableRef.value
+  if (!table || !Array.isArray(tableData.value)) return
+  
+  nextTick(() => {
+    tableData.value.forEach(rootNode => {
+      table.toggleRowExpansion(rootNode, true)
+    })
+  })
+}
 
 // init data
 const initData = () => {
@@ -74,6 +97,7 @@ const initData = () => {
   getMenuList(searchParams.value).then(response => {
     // If response is an array, use it directly; if it's an object with data property, use that
     tableData.value = Array.isArray(response) ? response : (response.data || response.list || [])
+    expandFirstLevel()
   }).catch(error => {
     console.error('Failed to get menu list:', error)
     ElMessage.error(error.message || 'Failed to get menu list')
@@ -90,6 +114,7 @@ const handleReset = (params) => {
 const handleRefresh = () => {
   getMenuList(searchParams.value).then(response => {
     tableData.value = Array.isArray(response) ? response : (response.data || response.list || [])
+    expandFirstLevel()
   }).catch(error => {
     console.error('Failed to refresh menu list:', error)
     ElMessage.error(error.message || 'Failed to refresh menu list')
@@ -101,6 +126,7 @@ const handleSearch = (params) => {
   searchParams.value = params
   getMenuList(searchParams.value).then(response => {
     tableData.value = Array.isArray(response) ? response : (response.data || response.list || [])
+    expandFirstLevel()
   }).catch(error => {
     console.error('Failed to search menu list:', error)
     ElMessage.error(error.message || 'Failed to search menu list')

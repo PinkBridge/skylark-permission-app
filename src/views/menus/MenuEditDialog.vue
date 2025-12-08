@@ -2,23 +2,42 @@
   <el-dialog :model-value="visible" :title="t('EditTitle')" align-center destroy-on-close :modal="false"
     modal-penetrable :show-close="false" style="max-width: 600px">
     <el-form ref="formRef" :model="form" :rules="rules" label-position="top">
-      <el-form-item :label="t('IDLabel')" prop="id">
-        <el-input v-model="form.id" :disabled="true" />
-      </el-form-item>
+
       <el-form-item :label="t('NameLabel')" prop="name">
         <el-input v-model="form.name" :placeholder="t('NameLabel')" />
       </el-form-item>
-      <el-form-item :label="t('ParentNameLabel')" prop="parentName">
-        <el-input v-model="form.parentName" :placeholder="t('ParentNameLabel')" />
+      <el-form-item :label="t('TypeLabel')" prop="type">
+        <el-select v-model="form.type" :placeholder="t('TypeLabel')">
+          <el-option :label="t('MenuLabel')" value="menu" />
+          <el-option :label="t('ButtonLabel')" value="button" />
+        </el-select>
       </el-form-item>
-      <el-form-item :label="t('PathLabel')" prop="path">
+      <el-form-item v-if="form.type == 'menu'" :label="t('ParentNameLabel')" prop="parentId">
+        <MenuSelect v-model="form.parentId" :disabled-ids="[form.id]" />
+      </el-form-item>
+      <el-form-item v-if="form.type == 'menu'" :label="t('PathLabel')" prop="path">
         <el-input v-model="form.path" :placeholder="t('PathLabel')" />
+      </el-form-item>
+      <el-form-item v-if="form.type == 'menu'" :label="t('IconLabel')" prop="icon">
+        <el-input v-model="form.icon" :placeholder="t('IconLabel')" />
+        <div class="upload-tip">
+          <a href="https://element-plus.org/zh-CN/component/icon#icon-collection" target="_blank">
+            element-plus-icon
+          </a>
+          {{ t('IconTip') }}
+        </div>
+      </el-form-item>
+      <el-form-item :label="t('SortLabel')" prop="sort">
+        <el-input-number v-model="form.sort" :placeholder="t('SortLabel')" />
       </el-form-item>
       <el-form-item :label="t('HiddenLabel')" prop="hidden">
         <el-select v-model="form.hidden" :placeholder="t('HiddenLabel')">
           <el-option :label="t('Yes')" :value="true" />
           <el-option :label="t('No')" :value="false" />
         </el-select>
+      </el-form-item>
+      <el-form-item :label="t('PermLabel')" prop="permlabel">
+        <el-input v-model="form.permlabel" :placeholder="t('PermLabel')" />
       </el-form-item>
       <el-form-item :label="t('ModuleKeyLabel')" prop="moduleKey">
         <el-input v-model="form.moduleKey" :placeholder="t('ModuleKeyLabel')" />
@@ -38,6 +57,7 @@ import { ref, watch, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { getMenuById, updateMenuById } from '@/views/menus/MenuApi'
 import { ElMessage } from 'element-plus'
+import MenuSelect from '@/views/menus/MenuSelect.vue'
 
 const { t } = useI18n()
 
@@ -51,6 +71,9 @@ const rules = computed(() => {
     name: [
       { required: true, message: t('NameRequired'), trigger: 'blur' }
     ],
+    type: [
+      { required: true, message: t('TypeRequired'), trigger: 'blur' }
+    ]
   }
 })
 
@@ -72,10 +95,14 @@ const onSubmit = async () => {
     await formRef.value.validate()
     const menu = {
       name: form.value.name,
-      parentName: form.value.parentName || '',
-      path: form.value.path || '',
+      parentId: form.value.parentId || '',
+      path: form.value.type == 'menu' ? form.value.path : '',
       hidden: form.value.hidden,
       moduleKey: form.value.moduleKey || '',
+      type: form.value.type || 'menu',
+      icon: form.value.type == 'menu' ? form.value.icon : '',
+      permlabel: form.value.permlabel || '',
+      sort: form.value.sort || 0,
     }
     updateMenuById(form.value.id, menu).then(() => {
       props.onSubmit()

@@ -4,11 +4,19 @@
     <el-descriptions border>
       <el-descriptions-item :label="t('IDLabel')">{{ menuInfo.id }}</el-descriptions-item>
       <el-descriptions-item :label="t('NameLabel')">{{ menuInfo.name }}</el-descriptions-item>
-      <el-descriptions-item :label="t('ParentNameLabel')">{{ menuInfo.parentName || '-' }}</el-descriptions-item>
+      <el-descriptions-item :label="t('ParentNameLabel')">{{ menuInfo.parentMenu ? menuInfo.parentMenu.name : '-' }}</el-descriptions-item>
       <el-descriptions-item :label="t('PathLabel')">{{ menuInfo.path }}</el-descriptions-item>
       <el-descriptions-item :label="t('HiddenLabel')">
         {{ menuInfo.hidden == true ? t('Yes') : t('No') }}
       </el-descriptions-item>
+      <el-descriptions-item :label="t('TypeLabel')">{{ menuInfo.type }}</el-descriptions-item>
+      <el-descriptions-item :label="t('IconLabel')">
+        <el-icon :size="20" >
+          <component :is="menuInfo.icon" />
+        </el-icon>
+      </el-descriptions-item>
+      <el-descriptions-item :label="t('SortLabel')">{{ menuInfo.sort }}</el-descriptions-item>
+      <el-descriptions-item :label="t('PermLabel')">{{ menuInfo.permlabel }}</el-descriptions-item>
       <el-descriptions-item :label="t('ModuleKeyLabel')">{{ menuInfo.moduleKey }}</el-descriptions-item>
       <el-descriptions-item :label="t('CreatedAtLabel')">{{ menuInfo.createTime }}</el-descriptions-item>
       <el-descriptions-item :label="t('UpdatedAtLabel')">{{ menuInfo.updateTime }}</el-descriptions-item>

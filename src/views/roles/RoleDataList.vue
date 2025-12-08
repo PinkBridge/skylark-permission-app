@@ -24,11 +24,14 @@
           <el-button link type="primary" size="default" @click="handleDetail(row)">
             {{ t('DetailLabel') }}
           </el-button>
-          <el-button link type="primary" size="default" @click="handleApiSelect(row)">
-            API
-          </el-button>
           <el-button link type="primary" size="default" @click="handleEdit(row)">{{ t('EditLabel') }}</el-button>
           <el-button link type="primary" size="default" @click="handleDelete(row.id)">{{ t('DeleteLabel') }}</el-button>
+          <el-button link type="primary" size="default" @click="handleApiSelect(row)">
+            {{ t('APIsLabel') }}
+          </el-button>
+          <el-button link type="primary" size="default" @click="handleApiSelect(row)">
+            {{ t('MenusLabel') }}
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
