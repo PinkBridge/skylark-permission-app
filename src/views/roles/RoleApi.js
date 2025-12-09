@@ -38,3 +38,16 @@ export function createRole(role) {
   return http.post(`${ROLE_PREFIX}`, role)
 }
 
+/**
+ * POST /api/permission/roles/{roleId}/apis/{apiId}:toggle
+ */
+export function toggleRoleApi(roleId, apiId) {
+  return http.post(`${ROLE_PREFIX}/${roleId}/apis/${apiId}:toggle`)
+}
+
+/**
+ * POST /api/permission/roles/{roleId}/menus/{menuId}:toggle
+ */
+export function toggleRoleMenu(roleId, menuIds) {
+  return http.post(`${ROLE_PREFIX}/${roleId}/menus:toggle`, { menuIds: menuIds })
+}

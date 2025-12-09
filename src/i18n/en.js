@@ -160,6 +160,7 @@ const enMessages = {
   PermRequired: 'Please enter permission label',
   SortLabel: 'Sort',
   SortRequired: 'Please enter sort',
+  CloseButtonText: 'Close',
 }
 
 export default enMessages

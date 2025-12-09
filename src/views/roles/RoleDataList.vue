@@ -29,7 +29,7 @@
           <el-button link type="primary" size="default" @click="handleApiSelect(row)">
             {{ t('APIsLabel') }}
           </el-button>
-          <el-button link type="primary" size="default" @click="handleApiSelect(row)">
+          <el-button link type="primary" size="default" @click="handleMenuSelect(row)">
             {{ t('MenusLabel') }}
           </el-button>
         </template>
@@ -47,6 +47,8 @@
       :onSubmit="handleEditSubmit" :onCancel="handleEditCancel" />
     <ApiSelectTableDialog v-if="apiSelectRow && apiSelectRow.id" :visible="apiSelectTableVisible" :row="apiSelectRow"
       :onConfirm="handleApiSelectConfirm" :onCancel="handleApiSelectCancel" />
+    <MenuSelectTableDialog v-if="menuSelectRow && menuSelectRow.id" :visible="menuSelectTableVisible"
+      :row="menuSelectRow" :onConfirm="handleMenuSelectConfirm" :onCancel="handleMenuSelectCancel" />
   </el-card>
 </template>
 
@@ -61,6 +63,7 @@ import RoleDetailDialog from '@/views/roles/RoleDetailDialog.vue'
 import RoleCreateDialog from '@/views/roles/RoleCreateDialog.vue'
 import RoleEditDialog from '@/views/roles/RoleEditDialog.vue'
 import ApiSelectTableDialog from '@/views/roles/ApiSelectTableDialog.vue'
+import MenuSelectTableDialog from '@/views/roles/MenuSelectTableDialog.vue'
 
 const { t } = useI18n()
 
@@ -77,6 +80,8 @@ const editRow = ref({})
 const searchParams = ref({})
 const apiSelectTableVisible = ref(false)
 const apiSelectRow = ref({})
+const menuSelectTableVisible = ref(false)
+const menuSelectRow = ref({})
 
 // init data
 const initData = () => {
@@ -224,6 +229,11 @@ const handleApiSelect = (row) => {
   apiSelectTableVisible.value = true
 }
 
+const handleMenuSelect = (row) => {
+  menuSelectRow.value = row
+  menuSelectTableVisible.value = true
+}
+
 // select api confirm
 const handleApiSelectConfirm = () => {
   apiSelectTableVisible.value = false
@@ -234,6 +244,15 @@ const handleApiSelectCancel = () => {
   apiSelectTableVisible.value = false
 }
 
+// select menu confirm
+const handleMenuSelectConfirm = () => {
+  menuSelectTableVisible.value = false
+}
+
+// select menu cancel
+const handleMenuSelectCancel = () => {
+  menuSelectTableVisible.value = false
+}
 // mounted
 onMounted(() => {
   initData()
@@ -253,4 +272,3 @@ onMounted(() => {
   justify-content: flex-start;
 }
 </style>
-

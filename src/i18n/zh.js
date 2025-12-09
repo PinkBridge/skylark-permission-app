@@ -161,6 +161,7 @@ const zhMessages = {
   PermRequired: '请输入权限标签',
   SortLabel: '排序',
   SortRequired: '请输入排序',
+  CloseButtonText: '关闭',
 }
 
 export default zhMessages
