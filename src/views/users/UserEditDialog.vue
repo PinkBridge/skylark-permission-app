@@ -18,10 +18,8 @@
       <el-form-item :label="t('PhoneLabel')" prop="phone">
         <el-input v-model="form.phone" />
       </el-form-item>
-      <el-form-item :label="t('RoleLabel')" prop="role">
-        <el-select v-model="form.role">
-          <el-option v-for="item in rolesOptions" :key="item.value" :label="item.label" :value="item.value" />
-        </el-select>
+      <el-form-item :label="t('RoleLabel')" prop="roleIds">
+        <RoleSelect v-model="form.roleIds" :model-value="form.roleIds" :placeholder="t('RoleLabel')" />
       </el-form-item>
       <el-form-item :label="t('StatusLabel')" prop="status">
         <el-select v-model="form.status">
@@ -45,6 +43,7 @@ import { getUserById, updateUserById } from '@/views/users/UserApi'
 import { ElMessage } from 'element-plus'
 import OrgSelect from '@/views/orgs/OrgSelect.vue'
 import ResourceUpload from '@/components/ResourceUpload.vue'
+import RoleSelect from '@/views/roles/RoleSelect.vue'
 
 const { t } = useI18n()
 
@@ -52,10 +51,6 @@ const props = defineProps(['visible', 'row', 'onSubmit', 'onCancel'])
 
 const formRef = ref(null)
 const form = ref({})
-const rolesOptions = ref([
-  { label: t('SuperAdmin'), value: '1' },
-  { label: t('Admin'), value: '2' },
-])
 const statusOptions = ref([
   { label: t('Active'), value: 'active' },
   { label: t('Disabled'), value: 'disabled' }
@@ -91,7 +86,7 @@ const rules = computed(() => {
     phone: [
       { validator: validatePhone, trigger: 'blur' }
     ],
-    role: [
+    roleIds: [
       { required: true, message: t('RoleRequired'), trigger: 'change' }
     ],
     status: [
@@ -104,6 +99,7 @@ const fetchUserData = () => {
   if (props.row && props.row.id) {
     getUserById(props.row.id).then(response => {
       form.value = response.user || {}
+      form.value.roleIds = response.roles ? response.roles.map(item => item.id) : []
     }).catch(error => {
       console.error('Failed to get user information:', error)
       ElMessage.error(error.message || 'Failed to get user information')
@@ -130,7 +126,7 @@ const onSubmit = async () => {
       username: form.value.username,
       email: form.value.email,
       phone: form.value.phone,
-      role: form.value.role,
+      roleIds: form.value.roleIds,
       status: form.value.status
     }
     

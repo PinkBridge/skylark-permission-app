@@ -18,9 +18,7 @@
         <el-input v-model="form.phone" />
       </el-form-item>
       <el-form-item :label="t('RoleLabel')" prop="role">
-        <el-select v-model="form.role">
-          <el-option v-for="item in rolesOptions" :key="item.value" :label="item.label" :value="item.value" />
-        </el-select>
+        <RoleSelect v-model="form.roleIds" :model-value="form.roleIds" :placeholder="t('RoleLabel')" />
       </el-form-item>
       <el-form-item :label="t('StatusLabel')" prop="status">
         <el-select v-model="form.status">
@@ -47,6 +45,7 @@ import { useI18n } from 'vue-i18n'
 import { createUser } from '@/views/users/UserApi'
 import ResourceUpload from '@/components/ResourceUpload.vue'
 import OrgSelect from '@/views/orgs/OrgSelect.vue'
+import RoleSelect from '@/views/roles/RoleSelect.vue'
 
 const { t } = useI18n()
 // props
@@ -58,16 +57,12 @@ const form = ref({
   password: '',
   email: '',
   phone: '',
-  role: '',
+  roleIds: [],
   status: '',
   orgId: '',
   avatar: ''
 })
 
-const rolesOptions = ref([
-  { label: t('SuperAdmin'), value: '1' },
-  { label: t('Admin'), value: '2' },
-])
 const statusOptions = ref([
   { label: t('Active'), value: 'ACTIVE' },
   { label: t('Inactive'), value: 'INACTIVE' },
@@ -117,7 +112,7 @@ const rules = computed(() => {
     phone: [
       { validator: validatePhone, trigger: 'blur' }
     ],
-    role: [
+    roleIds: [
       { required: true, message: t('RoleRequired'), trigger: 'change' }
     ],
     status: [
@@ -136,7 +131,7 @@ const onCancel = () => {
     password: '',
     email: '',
     phone: '',
-    role: '',
+    roleIds: [],
     status: ''
   }
   props.onCancel()
@@ -155,7 +150,7 @@ const onSubmit = async () => {
       password: form.value.password,
       email: form.value.email,
       phone: form.value.phone,
-      role: form.value.role,
+      roleIds: form.value.roleIds,
       status: form.value.status
     }
     // Create user

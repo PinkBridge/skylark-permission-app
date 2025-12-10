@@ -11,6 +11,13 @@ export function getRolePage(currentPage, pageSize, params) {
 }
 
 /**
+ * Get role list (all roles)
+ */
+export function getRoleList(params) {
+  return http.get(`${ROLE_PREFIX}`, { ...params })
+}
+
+/**
  * Get role by id
  */
 export function getRoleById(id) {
