@@ -1,6 +1,6 @@
 <template>
-  <el-menu class="el-menu-vertical" :default-active="activeMenu" router background-color="#001529" 
-  text-color="#fff" active-text-color="#ffd04b"  :default-openeds="defaultOpeneds">
+  <el-menu :key="menuKey" class="el-menu-vertical" :default-active="activeMenu" router background-color="#001529" 
+  text-color="#fff" active-text-color="#ffd04b" :default-openeds="defaultOpeneds">
     <template v-for="group in menuItems" :key="group.id">
       <el-sub-menu :index="String(group.id)">
         <template #title>
@@ -17,27 +17,12 @@
 </template>
 
 <script>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import * as Icons from '@element-plus/icons-vue'
 import { getMyMenuTree } from '../api/menu'
 import { getAccessToken } from '../utils/auth'
-
-const iconMap = {
-  HomeFilled: Icons.HomeFilled,
-  Setting: Icons.Setting,
-  Menu: Icons.Menu,
-  User: Icons.User,
-  UserFilled: Icons.UserFilled,
-  Role: Icons.Medal,
-  App: Icons.Grid,
-  Log: Icons.Document,
-  Parameter: Icons.CollectionTag,
-  Tenant: Icons.OfficeBuilding,
-  Notification: Icons.Bell,
-  Default: Icons.Menu
-}
 
 export default {
   name: 'MenuComponent',
@@ -48,23 +33,27 @@ export default {
     const menuItems = ref([])
     const loadedFromServer = ref(false)
     const defaultOpeneds = ref([])
+    const menuKey = ref(0)
 
-    const resolveIcon = (name) => iconMap[name] || iconMap.Default
     const resolveMenuIndex = (item) => {
       if (item?.path) return String(item.path)
       return item?.id ? String(item.id) : ''
     }
 
     const selectFirstChild = () => {
-      if (!menuItems.value.length) return
-      const firstGroup = menuItems.value[0]
-      const firstChild = firstGroup?.children?.[0]
-      const targetPath = firstChild?.path ? String(firstChild.path) : '/home'
-
-      if (!route.path.startsWith('/home') || route.path === '/home' || route.path === '/home/') {
+      // Only redirect to first child if current path is exactly /home or /home/
+      // Don't redirect if user is already on a specific route like /perm/tenants
+      if (route.path === '/home' || route.path === '/home/') {
+        if (!menuItems.value.length) return
+        const firstGroup = menuItems.value[0]
+        const firstChild = firstGroup?.children?.[0]
+        const targetPath = firstChild?.path ? String(firstChild.path) : '/home'
         router.replace(targetPath)
+        activeMenu.value = targetPath
+      } else {
+        // Just update activeMenu to match current route
+        activeMenu.value = route.path
       }
-      activeMenu.value = targetPath
     }
 
     const fetchMenuTree = async () => {
@@ -72,12 +61,15 @@ export default {
       try {
         const data = await getMyMenuTree()
         if (data) {
+          // Set defaultOpeneds first
+          defaultOpeneds.value = data.map(item => String(item.id))
           menuItems.value = data
           loadedFromServer.value = true
-          selectFirstChild()
-          // Default expand all first-level menus
-          defaultOpeneds.value = menuItems.value.map(item => item.id)
-          console.log(defaultOpeneds.value)
+          // Force re-render by updating key
+          nextTick(() => {
+            menuKey.value++
+            selectFirstChild()
+          })
         }
       } catch (error) {
         console.error('Failed to get menu:', error)
@@ -117,13 +109,14 @@ export default {
       }
     )
 
+
     return {
       activeMenu,
       menuItems,
-      resolveIcon,
       resolveMenuIndex,
       Icons,
-      defaultOpeneds
+      defaultOpeneds,
+      menuKey
     }
   }
 }
