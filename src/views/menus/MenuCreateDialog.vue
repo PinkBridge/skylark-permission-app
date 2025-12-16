@@ -35,8 +35,8 @@
           <el-option :label="t('No')" :value="false" />
         </el-select>
       </el-form-item>
-      <el-form-item :label="t('PermLabel')" prop="perm">
-        <el-input v-model="form.perm" :placeholder="t('PermLabel')" />
+      <el-form-item :label="t('PermLabel')" prop="permlabel">
+        <el-input v-model="form.permlabel" :placeholder="t('PermLabel')" />
       </el-form-item>
       <el-form-item :label="t('ModuleKeyLabel')" prop="moduleKey">
         <el-input v-model="form.moduleKey" :placeholder="t('ModuleKeyLabel')" />
@@ -73,6 +73,7 @@ const form = ref({
   sort: 0,
   icon: '',
   type: 'menu',
+  permlabel: '',
 })
 
 const rules = computed(() => {
@@ -82,6 +83,9 @@ const rules = computed(() => {
     ],
     type: [
       { required: true, message: t('TypeRequired'), trigger: 'blur' }
+    ],
+    permlabel: [
+      { required: true, message: t('PermLabelRequired'), trigger: 'blur' }
     ]
   }
 })
@@ -99,6 +103,7 @@ const onCancel = () => {
     sort: 0,
     icon: '',
     type: 'menu',
+    permlabel: '',
   }
   props.onCancel()
 }
@@ -117,6 +122,7 @@ const onSubmit = async () => {
       sort: form.value.sort || 0,
       icon: form.value.icon || '',
       type: form.value.type || 'menu',
+      permlabel: form.value.permlabel || '',
     }
     createMenu(menu).then(() => {
       formRef.value.resetFields()

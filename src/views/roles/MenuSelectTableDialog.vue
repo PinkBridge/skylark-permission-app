@@ -3,8 +3,8 @@
     :modal="false" modal-penetrable width="80%">
     <MenuSearchForm :search="handleSearch" :reset="handleReset" />
     <el-table :data="tableData" style="width: 100%" stripe border show-overflow-tooltip selection-mode="multiple"
-      @selection-change="handleSelectionChange" @select="handleSelect" ref="menuTableRef" row-key="id"
-      :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
+      ref="menuTableRef" row-key="id" @selection-change="handleSelectionChange" @select="handleSelect"
+      :tree-props="{ checkStrictly: true }">
       <el-table-column type="selection" width="55" />
       <el-table-column fixed prop="id" :label="t('IDLabel')" width="80" />
       <el-table-column prop="name" :label="t('NameLabel')" width="150" />
@@ -57,7 +57,7 @@ const props = defineProps(['visible', 'row', 'onConfirm', 'onCancel'])
 
 // data
 const tableData = ref([])
-const multipleSelection = ref([])
+const multipleSelection = ref([])  
 const menuTableRef = ref(null)
 const searchParams = ref({})
 
@@ -131,7 +131,6 @@ const handleSelectionChange = (val) => {
 
 const handleSelect = (selection, row) => {
   const table = menuTableRef.value
-  console.log("handleSelect", selection, row)
   // 如果选中的菜单有子集，需要递归所有子菜单id并添加到menuIds中
   const menuIds = [row.id]
   if (row.children && Array.isArray(row.children) && row.children.length > 0) {

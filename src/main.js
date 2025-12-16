@@ -7,6 +7,7 @@ import router from './router'
 
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import i18n from './i18n/index'
+import permission from './directives/permission'
 
 const app = createApp(App)
  
@@ -15,6 +16,9 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
   }
 }
+
+// Register permission directive
+app.directive('permission', permission)
 
 app.use(i18n)
 app.use(ElementPlus, {

@@ -2,7 +2,9 @@
   <el-card shadow="always">
     <AppSearchForm :search="handleSearch" :reset="handleReset" />
     <div class="buttons-block">
-      <el-button type="primary" size="default" :icon="Plus" @click="handleCreate">{{ t('NewButtonLabel') }}</el-button>
+      <el-button type="primary" size="default" :icon="Plus" 
+      v-permission="'system.apps.new'"
+      @click="handleCreate">{{ t('NewButtonLabel') }}</el-button>
       <el-button type="default" size="default" :icon="Refresh" @click="handleRefresh">{{
         t('RefreshButtonLabel') }}</el-button>
     </div>
@@ -41,11 +43,11 @@
       </el-table-column>
       <el-table-column :label="t('OperationsLabel')" min-width="150" fixed="right">
         <template #default="{ row }">
-          <el-button link type="primary" size="default" @click="handleDetail(row)">
+          <el-button link type="primary" size="default" @click="handleDetail(row)" v-permission="'system.apps.detail'">
             {{ t('DetailLabel') }}
           </el-button>
-          <el-button link type="primary" size="default" @click="handleEdit(row)">{{ t('EditLabel') }}</el-button>
-          <el-button link type="primary" size="default" @click="handleDelete(row.clientId)">{{ t('DeleteLabel') }}</el-button>
+          <el-button link type="primary" size="default" @click="handleEdit(row)" v-permission="'system.apps.edit'">{{ t('EditLabel') }}</el-button>
+          <el-button link type="primary" size="default" @click="handleDelete(row.clientId)" v-permission="'system.apps.delete'">{{ t('DeleteLabel') }}</el-button>
         </template>
       </el-table-column>
     </el-table>

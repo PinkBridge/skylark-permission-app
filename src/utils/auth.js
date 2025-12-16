@@ -80,6 +80,8 @@ export function clearTokens() {
   sessionStorage.removeItem('access_token')
   sessionStorage.removeItem('refresh_token')
   sessionStorage.removeItem('userInfo')
+  localStorage.removeItem('permissions')
+  sessionStorage.removeItem('permissions')
 }
 
 /**
