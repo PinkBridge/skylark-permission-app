@@ -114,6 +114,15 @@ const routes = [
           title: '资源管理',
           requiresAuth: true
         }
+      },
+      {
+        path: '/logger/loging',
+        name: 'LoginLogDataList',
+        component: () => import('@/views/loginlogs/LoginLogDataList.vue'),
+        meta: {
+          title: '登录日志',
+          requiresAuth: true
+        }
       }
     ]
   },

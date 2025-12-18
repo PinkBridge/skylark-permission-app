@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { getTenant } from '@/utils/tenant'
 
 const API_BASE = process.env.VUE_APP_OAUTH_BASE || 'http://localhost:9527/oauth'
 
@@ -99,7 +100,8 @@ export async function refreshToken(refreshToken) {
       grant_type: 'refresh_token',
       refresh_token: refreshToken,
       client_id: OAUTH_CONFIG.clientId,
-      client_secret: OAUTH_CONFIG.clientSecret
+      client_secret: OAUTH_CONFIG.clientSecret,
+      'X-Tenant-Id': getTenant()?.id
     })
 
     const response = await apiClient.post(OAUTH_CONFIG.tokenUrl, params.toString())
@@ -131,7 +133,8 @@ export async function logout(accessToken) {
       {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
-          'Authorization': `Basic ${credentials}`
+          'Authorization': `Basic ${credentials}`,
+          'X-Tenant-Id': getTenant()?.id
         }
       }
     )

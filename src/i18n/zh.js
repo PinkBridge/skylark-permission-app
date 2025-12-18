@@ -162,6 +162,19 @@ const zhMessages = {
   SortLabel: '排序',
   SortRequired: '请输入排序',
   CloseButtonText: '关闭',
+  LoginIpLabel: '登录IP',
+  LoginStatusLabel: '登录状态',
+  LoginTimeLabel: '登录时间',
+  LoginLocationLabel: '登录地点',
+  LoginMessageLabel: '登录消息',
+  UserAgentLabel: '用户代理',
+  Success: '成功',
+  Failure: '失败',
+  LoginStatusRequired: '请选择登录状态',
+  CreateSuccess: '创建成功',
+  CreateFailed: '创建失败',
+  UpdateSuccess: '更新成功',
+  UpdateFailed: '更新失败',
 }
 
 export default zhMessages

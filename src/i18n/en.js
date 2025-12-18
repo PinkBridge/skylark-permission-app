@@ -161,6 +161,19 @@ const enMessages = {
   SortLabel: 'Sort',
   SortRequired: 'Please enter sort',
   CloseButtonText: 'Close',
+  LoginIpLabel: 'Login IP',
+  LoginStatusLabel: 'Login Status',
+  LoginTimeLabel: 'Login Time',
+  LoginLocationLabel: 'Login Location',
+  LoginMessageLabel: 'Login Message',
+  UserAgentLabel: 'User Agent',
+  Success: 'Success',
+  Failure: 'Failure',
+  LoginStatusRequired: 'Please select login status',
+  CreateSuccess: 'Create successfully',
+  CreateFailed: 'Create failed',
+  UpdateSuccess: 'Update successfully',
+  UpdateFailed: 'Update failed',
 }
 
 export default enMessages
