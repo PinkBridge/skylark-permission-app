@@ -36,9 +36,6 @@
     </div>
     <LoginLogDetailDialog v-if="detailRow && detailRow.id" :visible="detailDialogVisible" :row="detailRow"
       :onConfirm="handleDetailConfirm" />
-    <LoginLogCreateDialog :visible="createDialogVisible" :onSubmit="handleCreateSubmit" :onCancel="handleCreateCancel" />
-    <LoginLogEditDialog v-if="editRow && editRow.id" :visible="editDialogVisible" :row="editRow"
-      :onSubmit="handleEditSubmit" :onCancel="handleEditCancel" />
   </el-card>
 </template>
 

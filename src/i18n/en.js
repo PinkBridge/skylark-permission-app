@@ -174,6 +174,9 @@ const enMessages = {
   CreateFailed: 'Create failed',
   UpdateSuccess: 'Update successfully',
   UpdateFailed: 'Update failed',
+  PageNotFound: 'Page not found',
+  BackToHome: 'Back to home',
+  WelcomeBackLabel: 'Welcome back',
 }
 
 export default enMessages

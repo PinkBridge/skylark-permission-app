@@ -21,8 +21,8 @@ import { ref, onMounted, watch, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import * as Icons from '@element-plus/icons-vue'
-import { getMyMenuTree } from '../api/menu'
-import { getAccessToken } from '../utils/auth'
+import { getMyMenuTree } from '@/api/me'
+import { getAccessToken } from '@/utils/auth'
 
 export default {
   name: 'MenuComponent',

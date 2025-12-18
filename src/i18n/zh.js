@@ -175,6 +175,9 @@ const zhMessages = {
   CreateFailed: '创建失败',
   UpdateSuccess: '更新成功',
   UpdateFailed: '更新失败',
+  PageNotFound: '页面不存在',
+  BackToHome: '返回首页',
+  WelcomeBackLabel: '欢迎回来',
 }
 
 export default zhMessages

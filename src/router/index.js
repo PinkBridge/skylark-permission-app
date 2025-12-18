@@ -13,33 +13,25 @@ const routes = [
     name: 'Welcome',
     component: () => import('@/views/Welcome.vue'),
     meta: {
-      title: '欢迎页',
+      title: 'Welcome',
       requiresAuth: false
     }
   },
   {
     path: '/home',
     component: () => import('@/views/Home.vue'),
+    name: 'Home',
     meta: {
-      title: '控制台',
+      title: 'Home',
       requiresAuth: false // Need to handle OAuth callback here, relax restriction
     },
     children: [
-      {
-        path: '',
-        name: 'Dashboard',
-        component: () => import('@/views/dashboard/DashboardOverview.vue'),
-        meta: {
-          title: '仪表盘',
-          requiresAuth: true
-        }
-      },
       {
         path: '/perm/users',
         name: 'UserDataList',
         component: () => import('@/views/users/UserDataList.vue'),
         meta: {
-          title: '用户管理',
+          title: 'Users',
           requiresAuth: true
         }
       },
@@ -48,7 +40,7 @@ const routes = [
         name: 'RoleDataList',
         component: () => import('@/views/roles/RoleDataList.vue'),
         meta: {
-          title: '角色管理',
+          title: 'Roles',
           requiresAuth: true
         }
       },
@@ -57,7 +49,7 @@ const routes = [
         name: 'ApiDataList',
         component: () => import('@/views/apis/ApiDataList.vue'),
         meta: {
-          title: 'API管理',
+          title: 'Apis',
           requiresAuth: true
         }
       },
@@ -66,7 +58,7 @@ const routes = [
         name: 'WhitelistDataList',
         component: () => import('@/views/whitelist/WhitelistDataList.vue'),
         meta: {
-          title: '白名单管理',
+          title: 'Whitelists',
           requiresAuth: true
         }
       },
@@ -75,7 +67,7 @@ const routes = [
         name: 'MenuDataList',
         component: () => import('@/views/menus/MenuDataList.vue'),
         meta: {
-          title: '菜单管理',
+          title: 'Menus',
           requiresAuth: true
         }
       },
@@ -84,7 +76,7 @@ const routes = [
         name: 'AppDataList',
         component: () => import('@/views/apps/AppDataList.vue'),
         meta: {
-          title: '应用管理',
+          title: 'Apps',
           requiresAuth: true
         }
       },
@@ -93,7 +85,7 @@ const routes = [
         name: 'OrgDataList',
         component: () => import('@/views/orgs/OrgDataList.vue'),
         meta: {
-          title: '组织管理',
+          title: 'Orgs',
           requiresAuth: true
         }
       },
@@ -102,7 +94,7 @@ const routes = [
         name: 'TenantDataList',
         component: () => import('@/views/tenants/TenantDataList.vue'),
         meta: {
-          title: '租户管理',
+          title: 'Tenants',
           requiresAuth: true
         }
       },
@@ -111,7 +103,7 @@ const routes = [
         name: 'ResourceDataList',
         component: () => import('@/views/resources/ResourceDataList.vue'),
         meta: {
-          title: '资源管理',
+          title: 'Resources',
           requiresAuth: true
         }
       },
@@ -120,7 +112,7 @@ const routes = [
         name: 'LoginLogDataList',
         component: () => import('@/views/loginlogs/LoginLogDataList.vue'),
         meta: {
-          title: '登录日志',
+          title: 'LoginLogs',
           requiresAuth: true
         }
       }
@@ -131,7 +123,7 @@ const routes = [
     name: 'NotFound',
     component: () => import('@/views/NotFound.vue'),
     meta: {
-      title: '页面不存在'
+      title: 'NotFound'
     }
   }
 ]
@@ -157,8 +149,8 @@ router.beforeEach((to, from, next) => {
   if (requiresAuth && !authenticated) {
     const authUrl = getAuthorizationUrl()
     window.location.href = authUrl
-  } else if (to.name === 'Welcome' && authenticated) {
-    next({ name: 'Dashboard' })
+  } else if (to.name === 'home' && authenticated) {
+    next({ name: 'Home' })
   } else {
     next()
   }

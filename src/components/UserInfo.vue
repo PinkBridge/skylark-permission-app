@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { getMyInfo } from '../api/user'
+import { getMyInfo } from '@/api/me'
 import { ref, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 export default {

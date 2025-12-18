@@ -24,7 +24,8 @@ import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { exchangeCodeForToken, checkToken } from '@/api/oauth'
-import { saveTokens, saveUserInfo, clearTokens, getUserInfo as getStoredTokenInfo, isAuthenticated, getAccessToken } from '../utils/auth'
+import { saveTokens, saveUserInfo, clearTokens, 
+  getUserInfo as getStoredTokenInfo, isAuthenticated, getAccessToken } from '../utils/auth'
 import MenuComponent from '@/components/Menu.vue'
 import HeaderComponent from '@/components/Header.vue'
 export default {
@@ -74,7 +75,7 @@ export default {
         }
         saveUserInfo(mergedTokenInfo, remember)
         tokenInfo.value = mergedTokenInfo
-        router.replace({ name: 'Dashboard' })
+        router.replace({ name: 'Home' })
       } catch (error) {
         console.error('OAuth callback error:', error)
         ElMessage.error('Login failed: ' + (error.message || 'Unknown error'))

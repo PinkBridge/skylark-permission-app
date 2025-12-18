@@ -21,8 +21,8 @@
         </el-button>
       </div>
       <div class="footer-section">
-        <p>© 2025 {{ tenant.companyName }}. All rights reserved.</p>
-        <p>Powered by {{ tenant.companyName }}</p>
+        <p>© 2025 {{ tenant.name }}. All rights reserved.</p>
+        <p>Powered by {{ tenant.name }}</p>
         <p>Address: {{ tenant.address }}</p>
         <p>Email: <a href="mailto:{{ tenant.contactEmail }}" target="_blank">{{ tenant.contactEmail }}</a></p>
         <p>Phone: <a href="tel:{{ tenant.contactPhone }}" target="_blank">{{ tenant.contactPhone }}</a></p>

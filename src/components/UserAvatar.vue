@@ -65,12 +65,12 @@ import {
   UserFilled
 } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router'
-import { clearTokens } from '../utils/auth'
+import { clearTokens } from '@/utils/auth'
 import { ElMessage } from 'element-plus'
 import UserInfoComponent from './UserInfo.vue'
 import { useI18n } from 'vue-i18n'
-import { changePassword as changePasswordApi } from '../api/user'
-import { getMyInfo as getMyInfoApi } from '../api/user'
+import { changePassword as changePasswordApi } from '@/api/me'
+import { getMyInfo as getMyInfoApi } from '@/api/me'
 
 const DEFAULT_AVATAR = 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
 

@@ -16,3 +16,12 @@ export function getMyInfo() {
 export function changePassword(data) {
   return http.put(`${USER_PREFIX}/me/password`, data)
 }
+
+const MENU_PREFIX = "/" + APP_NAME + "/menus"
+
+/**
+ * Get current user's menu tree
+ */
+export function getMyMenuTree() {
+  return http.get(`${MENU_PREFIX}/me/tree`)
+}

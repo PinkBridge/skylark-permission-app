@@ -15,8 +15,8 @@
       <el-table-column prop="sort" :label="t('SortLabel')" width="100" />
       <el-table-column prop="icon" :label="t('IconLabel')" width="80" >
         <template #default="{ row }">
-          <el-icon :size="20" :color="row.icon">
-            <component :is="row.icon" />
+          <el-icon v-if="row.icon && Icons[row.icon]" :size="20">
+            <component :is="Icons[row.icon]" />
           </el-icon>
         </template>
       </el-table-column>
@@ -62,6 +62,7 @@ import { ref, onMounted, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { getMenuList, deleteMenuById } from '@/views/menus/MenuApi'
 import { Refresh, Plus } from '@element-plus/icons-vue'
+import * as Icons from '@element-plus/icons-vue'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import MenuSearchForm from '@/views/menus/MenuSearchForm.vue'
 import MenuDetailDialog from '@/views/menus/MenuDetailDialog.vue'

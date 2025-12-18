@@ -1,7 +1,7 @@
 /**
  * Permission utility functions
  */
-import { getMyMenuTree } from '@/api/menu'
+import { getMyMenuTree } from '@/api/me'
 
 function collectPermissions(tree) {
   let result = []

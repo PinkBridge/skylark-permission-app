@@ -50,7 +50,6 @@ export async function exchangeCodeForToken(code) {
     })
 
     const response = await apiClient.post(OAUTH_CONFIG.tokenUrl, params.toString())
-    console.log(response.data)
     return response.data
   } catch (error) {
     console.error('Token exchange error:', error)
